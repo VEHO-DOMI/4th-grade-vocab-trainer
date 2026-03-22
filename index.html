@@ -2205,9 +2205,23 @@ function showHomeScreen() {
   document.getElementById('stat-sessions').textContent = d.totalSessions || 0;
   const acc = d.totalAnswered > 0 ? Math.round((d.totalCorrect / d.totalAnswered) * 100) + '%' : '–';
   document.getElementById('stat-accuracy').textContent = acc;
-  document.getElementById('stat-mastered').textContent = getTotalMastered();
+  const mastered = getTotalMastered();
+  document.getElementById('stat-mastered').textContent = mastered;
+  document.getElementById('stat-streak').textContent = state.studentData?.streak || 0;
+  renderBadgeRow();
+  renderDailyCard();
 
-  // Smart review (handled above)
+  // Smart review
+  const reviewWords = getSmartReviewWords();
+  const reviewBtn = document.getElementById('review-btn');
+  if (reviewBtn) {
+    if (reviewWords.length > 0) {
+      reviewBtn.style.display = '';
+      reviewBtn.textContent = '🔄 Smart Review (' + reviewWords.length + ' words)';
+    } else {
+      reviewBtn.style.display = 'none';
+    }
+  }
 
   initSourceGrid();
   showScreen('home-screen');
