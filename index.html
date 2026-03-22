@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v1.0 – 2026-03-21 · 4B MORE! 4 -->
+<!-- v1.0 – 2026-03-22 · 4th Grade MORE! 4 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b1120">
-<title>4B Vocab Trainer</title>
+<title>4th Grade Vocab Trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -216,6 +216,7 @@ h1 span {
 .type-btn.selected[data-type="context"] { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.45); box-shadow: 0 0 16px rgba(56,189,248,0.08); }
 .type-btn.selected[data-type="context-hard"] { background: rgba(56,189,248,0.15); border-color: rgba(56,189,248,0.5); box-shadow: 0 0 16px rgba(56,189,248,0.1); }
 .type-btn.selected[data-type="definition"] { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.4); box-shadow: 0 0 16px rgba(251,191,36,0.08); }
+.type-btn.selected[data-type="definition-hard"] { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.5); box-shadow: 0 0 16px rgba(251,191,36,0.1); }
 .type-btn.selected[data-type="translation"] { background: rgba(244,114,182,0.1); border-color: rgba(244,114,182,0.4); box-shadow: 0 0 16px rgba(244,114,182,0.08); }
 
 /* Buttons */
@@ -256,6 +257,20 @@ h1 span {
 }
 .word-count-display strong { color: var(--text); font-weight: 800; }
 
+.def-hint {
+  margin-top: 1rem; padding: 0.6rem 1rem; border-radius: 10px;
+  background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.12);
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  font-size: 0.85rem; color: var(--text-secondary);
+}
+.def-hint-letter {
+  font-size: 1.1rem; font-weight: 800; color: var(--def-color);
+  letter-spacing: 0.15em; font-family: 'Courier New', monospace;
+}
+.def-hint-count {
+  font-size: 0.8rem; color: var(--muted); font-weight: 500;
+}
+
 /* Progress bar (in-quiz) */
 .progress-wrap { width: 100%; margin-bottom: 1.2rem; }
 .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
@@ -277,7 +292,7 @@ h1 span {
   font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.2rem;
 }
 .task-type-label.context { background: rgba(96,165,250,0.12); color: var(--context-color); border: 1px solid rgba(96,165,250,0.15); }
-.task-type-label.definition { background: rgba(251,191,36,0.1); color: var(--def-color); border: 1px solid rgba(251,191,36,0.12); }
+.task-type-label.definition, .task-type-label.definition-hard { background: rgba(251,191,36,0.1); color: var(--def-color); border: 1px solid rgba(251,191,36,0.12); }
 .task-type-label.translation { background: rgba(244,114,182,0.1); color: var(--trans-color); border: 1px solid rgba(244,114,182,0.12); }
 
 .quiz-prompt {
@@ -423,6 +438,8 @@ h1 span {
   .type-btn { padding: 0.75rem 0.7rem; font-size: 0.85rem; border-radius: 12px; }
 
   .word-count-display { font-size: 0.92rem; padding: 0.6rem; margin: 0.8rem 0; }
+  .def-hint { flex-direction: column; gap: 0.4rem; padding: 0.5rem 0.8rem; }
+  .def-hint-letter { font-size: 1rem; }
 
   .btn { padding: 0.85rem 1.6rem; font-size: 0.95rem; border-radius: 16px; }
   .btn-small { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
@@ -613,7 +630,7 @@ body.playing h1, body.playing .subtitle { display: none; }
 </head>
 <body>
 
-<h1><span>4B Vocab Trainer</span></h1>
+<h1><span>4th Grade Vocab Trainer</span></h1>
 <p class="subtitle">Practice &bull; Learn &bull; Master</p>
 <p class="school-name">VEHO &ndash; Gymnasium und wirtschaftskundliches Realgymnasium der Dominikanerinnen</p>
 
@@ -653,7 +670,7 @@ body.playing h1, body.playing .subtitle { display: none; }
 <!-- HOME SCREEN -->
 <div id="home-screen" class="screen">
   <div class="welcome-bar">
-    <div class="welcome-name" id="welcome-name">Welcome <small>4B</small></div>
+    <div class="welcome-name" id="welcome-name">Welcome <small>4th Grade</small></div>
     <button class="logout-btn" onclick="logout()">Switch User</button>
   </div>
 
@@ -681,7 +698,8 @@ body.playing h1, body.playing .subtitle { display: none; }
       <button class="type-btn selected" data-type="mix" onclick="selectType(this)" title="Random mix of all exercise types">Mix</button>
       <button class="type-btn" data-type="context" onclick="selectType(this)" title="Complete the sentence — first letter + exact letter count shown">Context (easy)</button>
       <button class="type-btn" data-type="context-hard" onclick="selectType(this)" title="Complete the sentence — only the first letter is shown, no letter count">Context (hard)</button>
-      <button class="type-btn" data-type="definition" onclick="selectType(this)" title="Read an English definition and guess which word it describes">Definition</button>
+      <button class="type-btn" data-type="definition" onclick="selectType(this)" title="Read an English definition — first letters and word count shown">Definition (easy)</button>
+      <button class="type-btn" data-type="definition-hard" onclick="selectType(this)" title="Read an English definition — no hints given">Definition (hard)</button>
       <button class="type-btn" data-type="translation" onclick="selectType(this)" title="See the German word and type the English translation">Translation</button>
     </div>
   </div>
@@ -824,7 +842,7 @@ firebase.initializeApp({
   appId: "1:623091115688:web:8c8fcbc87a623056d8449d"
 });
 const db = firebase.firestore();
-const CLASS_ID = '4B';
+const CLASS_ID = '4th-grade';
 const classRef = db.collection('classes').doc(CLASS_ID);
 const studentsRef = classRef.collection('students');
 
@@ -832,12 +850,12 @@ const studentsRef = classRef.collection('students');
 const vocabData = {
 "Unit 1": [
 {w:"be aware of sth",g:"sich etw bewusst sein",d:"To know about or realise something exists or is happening",s:"Are you _____ how dangerous it is to swim in this river?",cf:"aware of",a:["be aware of sth","be aware of something","be aware of"]},
-{w:"Catholic",g:"katholisch, Katholik/in",d:"Relating to the Roman Catholic Church",s:"My grandmother goes to a _____ church every Sunday morning.",a:["Catholics"]},
+{w:"Catholic",g:"katholisch, Katholik/in",d:"Relating to the largest Christian Church, led by the Pope",s:"My grandmother goes to a _____ church every Sunday morning.",a:["Catholics"]},
 {w:"fluent",g:"fließend",d:"Able to speak a language smoothly and easily",s:"He grew up in Spain, so he is _____ in Spanish.",a:[]},
 {w:"independent",g:"unabhängig",d:"Free from the control or influence of others",s:"She moved into her own flat because she wanted to be more _____.",a:[]},
 {w:"leading",g:"führend",d:"Most important or most successful in a particular area",s:"She is one of the _____ scientists in the field of medicine.",a:[]},
 {w:"member",g:"Mitglied",d:"A person who belongs to a group or organisation",s:"Every _____ of the football team has to come to practice on Wednesdays.",a:["member","members"]},
-{w:"primary school",g:"Volksschule",d:"A school for children between the ages of about 6 and 10",s:"My little sister just started _____ and she already loves it.",a:[]},
+{w:"primary school",g:"Volksschule",d:"The first level of education for children aged about 6 to 10",s:"My little sister just started _____ and she already loves it.",a:[]},
 {w:"cattle",g:"Rinder; Vieh",d:"Cows and bulls kept on a farm for milk or meat",s:"The farmer has about fifty _____ in the field behind the barn.",a:[]},
 {w:"cheer",g:"jubeln",d:"To shout with joy or encouragement",s:"The crowd began to _____ when the singer came on stage.",a:["cheer","cheered"]},
 {w:"crop",g:"Ernte",d:"A plant grown in large amounts by farmers, such as wheat or potatoes",s:"The dry weather destroyed most of the wheat _____ this summer.",a:["crops"]},
@@ -885,7 +903,7 @@ const vocabData = {
 {w:"report",g:"Bericht",d:"A written or spoken account of something that has happened",s:"The teacher asked us to write a _____ about what happened on our school trip.",a:["reports"]},
 {w:"attractive",g:"attraktiv",d:"Pleasant to look at; good-looking",s:"The old town centre is very _____ with its colourful buildings and narrow streets.",a:[]},
 {w:"nephew",g:"Neffe",d:"The son of your brother or sister",s:"My sister just had a baby boy, so now I have a little _____.",a:["nephews"]},
-{w:"office clerk",g:"Büroangestellte/r",d:"A person who works in an office doing tasks like filing and answering calls",s:"He got a job as an _____ and spends most of his day answering emails.",a:["office clerks"]},
+{w:"office clerk",g:"Büroangestellte/r",d:"A person who works at a desk doing tasks like filing and answering calls",s:"He got a job as an _____ and spends most of his day answering emails.",a:["office clerks"]},
 {w:"keep an eye on",g:"aufpassen auf",d:"To watch someone or something carefully",s:"Can you _____ my bag for a minute while I go to the toilet?",a:[]},
 {w:"confusion",g:"Verwirrung",d:"A state of not understanding what is happening or what something means",s:"There was a lot of _____ when the fire alarm went off during the exam.",a:[]},
 {w:"relative",g:"Verwandte/r",d:"A member of your family",s:"I have a _____ who lives in Canada — she's my mum's cousin.",a:["relative","relatives"]},
@@ -913,7 +931,7 @@ const vocabData = {
 {w:"investigation",g:"Ermittlungen; Untersuchung",d:"The process of trying to find out all the facts about something, especially a crime",s:"The _____ into the missing painting took the police several months.",a:["investigations"]},
 {w:"common",g:"häufig; gewöhnlich",d:"Happening often; usual or ordinary",s:"Headaches are very _____ when you spend too much time looking at screens.",a:[]},
 {w:"personal",g:"persönlich",d:"Relating to or belonging to a particular person rather than a group",s:"Please don't ask me about that — it's _____.",a:[]},
-{w:"crime scene",g:"Tatort",d:"The place where a crime happened",s:"Nobody was allowed to enter the _____ until the detectives had finished their work.",a:["crime scenes"]},
+{w:"crime scene",g:"Tatort",d:"The place where something illegal happened",s:"Nobody was allowed to enter the _____ until the detectives had finished their work.",a:["crime scenes"]},
 {w:"realise",g:"erkennen; begreifen",d:"To become aware of something that you did not know before",s:"I didn't _____ how late it was until I looked at my phone.",a:["realise","realize"]},
 ],
 "Unit 3": [
@@ -927,13 +945,13 @@ const vocabData = {
 {w:"announcement",g:"Durchsage, Ankündigung",d:"A public or official statement giving information about something",s:"The _____ at the train station said that our train would be twenty minutes late.",a:["announcements"]},
 {w:"be in trouble",g:"in Schwierigkeiten sein",d:"To be in a difficult or dangerous situation",s:"If you don't finish your homework, you'll _____ with the teacher.",a:["be in trouble","in trouble"]},
 {w:"blow up",g:"explodieren",d:"To suddenly burst or explode with great force",s:"The old building _____ after a gas leak was discovered too late.",cf:"blew up",a:["blow up","blew up"]},
-{w:"emergency landing",g:"Notlandung",d:"An unplanned landing made by an aircraft because of a serious problem",s:"The plane had engine problems and had to make an _____ in a field.",a:["emergency landings"]},
+{w:"emergency landing",g:"Notlandung",d:"When a pilot has to bring the plane down quickly because of a serious problem",s:"The plane had engine problems and had to make an _____ in a field.",a:["emergency landings"]},
 {w:"evacuate",g:"evakuieren",d:"To move people away from a dangerous place to somewhere safe",s:"The school had to _____ all students when smoke was seen in the building.",a:["evacuate","evacuated"]},
-{w:"flock of birds",g:"Vogelschwarm",d:"A large group of birds flying or resting together",s:"We saw a huge _____ flying south for the winter.",a:[]},
+{w:"flock of birds",g:"Vogelschwarm",d:"A large group of feathered animals flying or resting together",s:"We saw a huge _____ flying south for the winter.",a:[]},
 {w:"glide down",g:"hinuntergleiten",d:"To move smoothly and quietly downward through the air",s:"The eagle spread its wings and began to _____ towards the river.",a:[]},
 {w:"miracle",g:"Wunder",d:"An amazing event that cannot be explained and is believed to be caused by God or luck",s:"It was a _____ that nobody was hurt in the car crash.",a:["miracles"]},
 {w:"on duty",g:"im Dienst",d:"Currently working or responsible, especially as part of one's job",s:"The security guard was _____ all night and didn't sleep at all.",a:[]},
-{w:"rescue boat",g:"Rettungsboot",d:"A boat used to save people from danger, especially at sea",s:"A _____ was sent out to help the swimmers who got caught in the storm.",a:["rescue boat","rescue boats"]},
+{w:"rescue boat",g:"Rettungsboot",d:"A vessel used to save people from danger, especially at sea",s:"A _____ was sent out to help the swimmers who got caught in the storm.",a:["rescue boat","rescue boats"]},
 {w:"runway",g:"Landebahn",d:"A long, flat surface at an airport where planes take off and land",s:"The plane waited on the _____ for ten minutes before it was allowed to take off.",a:["runways"]},
 {w:"takeoff",g:"Abflug, Start",d:"The moment when a plane leaves the ground and begins to fly",s:"I always feel nervous during _____ because the plane shakes a little.",a:["take-off","take off"]},
 {w:"treatment",g:"Behandlung",d:"Medical care given to a patient for an illness or injury",s:"The doctor said she needs _____ for her knee injury.",a:["treatment","treatments"]},
@@ -988,7 +1006,7 @@ const vocabData = {
 {w:"employer",g:"Arbeitgeber/in",d:"A person or company that pays people to work for them",s:"A good _____ treats their workers fairly and pays them on time.",a:["employers"]},
 {w:"enthusiastic",g:"enthusiastisch, begeistert",d:"Showing a lot of excitement and interest about something",s:"The students were very _____ about the idea of a school trip to London.",a:[]},
 {w:"eye contact",g:"Augenkontakt",d:"The act of looking directly into another person's eyes during a conversation",s:"When giving a presentation, try to make _____ with your audience.",a:[]},
-{w:"(job) interview",g:"Vorstellungsgespräch",d:"A formal meeting where someone is asked questions to see if they are suitable for a job",s:"He was very nervous before his first _____.",a:["job interview","interview"]},
+{w:"(job) interview",g:"Vorstellungsgespräch",d:"A formal meeting where someone is asked questions to see if they are right for a position",s:"He was very nervous before his first _____.",a:["job interview","interview"]},
 {w:"memorise",g:"sich einprägen",d:"To learn something so well that you can remember it perfectly",s:"I need to _____ all these new vocabulary words before the test.",a:["memorise","memorize"]},
 {w:"naturally",g:"natürlich",d:"In a way that is normal and expected; of course",s:"Just relax and speak _____ — don't try to be someone you're not.",a:[]},
 {w:"skills",g:"Fähigkeiten",d:"The abilities and knowledge needed to do something well",s:"Learning a musical instrument helps you develop many useful _____.",a:["skill"]},
@@ -1033,7 +1051,7 @@ const vocabData = {
 "Unit 6": [
 {w:"achieve",g:"erreichen",d:"To succeed in doing something good after working hard",s:"If you study hard enough, you can _____ anything you want.",a:["achieved"]},
 {w:"donate",g:"spenden",d:"To give money, food, or goods to help a person or organisation",s:"Our school decided to _____ books to the children's hospital.",a:["donated"]},
-{w:"drop out (of school)",g:"(die Schule) abbrechen",d:"To leave school before finishing your education",s:"She wanted to _____ at 15, but her parents convinced her to stay.",cf:"drop out",a:["drop out","dropped out","drop out of school","dropped out of school"]},
+{w:"drop out (of school)",g:"(die Schule) abbrechen",d:"To quit your studies before finishing your education",s:"She wanted to _____ at 15, but her parents convinced her to stay.",cf:"drop out",a:["drop out","dropped out","drop out of school","dropped out of school"]},
 {w:"goal",g:"Ziel",d:"Something that you are trying to achieve",s:"My biggest _____ this year is to pass all my exams.",a:["goals"]},
 {w:"income",g:"Einkommen",d:"The money that a person earns from work or receives regularly",s:"Many families find it hard to live on a low _____.",a:[]},
 {w:"inspire",g:"inspirieren",d:"To give someone the desire or confidence to do something great",s:"My art teacher really _____ me to start painting every day.",cf:"inspired",a:["inspire","inspired"]},
@@ -1116,8 +1134,8 @@ const vocabData = {
 {w:"kitschy",g:"kitschig",d:"In poor taste because it is too bright, sentimental, or cheap-looking",s:"The souvenir shop was full of _____ little figurines that nobody really needed.",a:[]},
 ],
 "Unit 9": [
-{w:"wedding dress",g:"Brautkleid",d:"A special dress worn by a woman on her wedding day",s:"She chose a beautiful white _____ with lace and tiny pearls.",a:["wedding dresses","wedding gown"]},
-{w:"wedding suit",g:"Hochzeitsanzug",d:"A formal suit worn by a man on his wedding day",s:"He looked very handsome in his dark blue _____.",a:["wedding suits"]},
+{w:"wedding dress",g:"Brautkleid",d:"The special white gown a bride wears on her big day",s:"She chose a beautiful white _____ with lace and tiny pearls.",a:["wedding dresses","wedding gown"]},
+{w:"wedding suit",g:"Hochzeitsanzug",d:"The formal outfit a groom wears on the big day",s:"He looked very handsome in his dark blue _____.",a:["wedding suits"]},
 {w:"bride",g:"Braut",d:"A woman on her wedding day or just before and after it",s:"The _____ looked absolutely stunning as she walked down the aisle.",a:["brides"]},
 {w:"bridegroom",g:"Bräutigam",d:"A man on his wedding day or just before and after it",s:"The nervous _____ waited at the altar for his future wife.",a:["groom","bridegrooms"]},
 {w:"bridesmaid",g:"Brautjungfer",d:"A girl or woman who helps the bride at her wedding",s:"She asked her best friend to be her _____ at the wedding.",a:["bridesmaids"]},
@@ -1126,7 +1144,7 @@ const vocabData = {
 {w:"fashionable",g:"in Mode, modisch",d:"Popular and considered stylish at a particular time",s:"Those trainers were really _____ last year, but now nobody wears them.",a:[]},
 {w:"firstly",g:"erstens",d:"Used to introduce the first point in a list of arguments",s:"There are two reasons I can't come: _____, I have too much homework, and secondly, I'm not feeling well.",a:[]},
 {w:"funeral",g:"Begräbnis",d:"A ceremony held after someone has died, where the body is buried or cremated",s:"Many people came to the _____ to say goodbye to the old man.",a:["funerals"]},
-{w:"health risk",g:"Gesundheitsrisiko",d:"Something that could be dangerous or harmful to your health",s:"Not wearing a helmet when cycling is a serious _____.",a:["health risks"]},
+{w:"health risk",g:"Gesundheitsrisiko",d:"Something that could be dangerous or harmful to your body",s:"Not wearing a helmet when cycling is a serious _____.",a:["health risks"]},
 {w:"in common",g:"gemein, gemeinsam",d:"Shared by two or more people or things",s:"We became friends because we have a lot _____.",a:[]},
 {w:"needle",g:"Nadel",d:"A thin, sharp piece of metal used for sewing or injections",s:"Be careful with that sewing _____ — it's very sharp!",a:["needles"]},
 {w:"permanent",g:"dauerhaft, endgültig",d:"Lasting forever or for a very long time; not temporary",s:"Think carefully before you get a tattoo — it's _____.",a:[]},
@@ -1140,11 +1158,11 @@ const vocabData = {
 {w:"Far East",g:"Fernost",d:"The countries of eastern Asia, such as China, Japan, and Korea",s:"Many spices and teas that we use every day originally come from the _____.",a:[]},
 {w:"gesture",g:"Geste",d:"A movement of your hand or body that expresses a feeling or idea",s:"Waving hello is a friendly _____ that most people understand.",a:["gestures"]},
 {w:"greet",g:"begrüßen",d:"To welcome someone with words or actions when you meet them",s:"In Austria, people often _____ each other with a handshake.",a:[]},
-{w:"index finger",g:"Zeigefinger",d:"The finger next to your thumb, used for pointing",s:"She pointed at the map with her _____ to show us where we were.",a:["index fingers"]},
+{w:"index finger",g:"Zeigefinger",d:"The one next to your thumb, used for pointing",s:"She pointed at the map with her _____ to show us where we were.",a:["index fingers"]},
 {w:"insult",g:"beleidigen",d:"To say or do something rude that offends someone",s:"Be careful what you say — you don't want to _____ anyone.",a:["insulted"]},
-{w:"nod the head",g:"mit dem Kopf nicken",d:"To move your head up and down to show agreement or understanding",s:"If you agree with me, just _____ and we'll go ahead with the plan.",cf:"nod your head",a:["nod the head","nod your head"]},
+{w:"nod the head",g:"mit dem Kopf nicken",d:"To move up and down to show agreement or understanding",s:"If you agree with me, just _____ and we'll go ahead with the plan.",cf:"nod your head",a:["nod the head","nod your head"]},
 {w:"palm",g:"Handfläche",d:"The inside part of your hand between your wrist and fingers",s:"He held the small bird carefully in the _____ of his hand.",a:["palms"]},
-{w:"pass something on",g:"etwas weitergeben",d:"To give something to another person after you have received it",s:"When you've finished reading this note, please _____ to the next person.",cf:"pass it on",a:["pass something on","pass on","pass it on"]},
+{w:"pass something on",g:"etwas weitergeben",d:"To hand over to another person after you have received it",s:"When you've finished reading this note, please _____ to the next person.",cf:"pass it on",a:["pass something on","pass on","pass it on"]},
 {w:"thumb",g:"Daumen",d:"The short, thick finger on each hand, set apart from the other four",s:"He gave us a _____ up to show that everything was OK.",a:["thumbs"]},
 {w:"victory",g:"Sieg",d:"The act of winning a battle, game, or competition",s:"The team celebrated their _____ with a big party after the match.",a:["victories"]},
 {w:"zero",g:"Null",d:"The number 0; nothing",s:"Last winter, the temperature fell below _____ for two whole weeks.",a:[]},
@@ -1155,14 +1173,14 @@ const vocabData = {
 {w:"hastily",g:"hastig",d:"Done quickly and often without enough care",s:"He _____ packed his bag and ran out the door.",a:[]},
 {w:"ignore",g:"ignorieren",d:"To deliberately not pay attention to someone or something",s:"I said hello three times, but he chose to _____ me completely.",a:["ignored"]},
 {w:"sigh",g:"seufzen",d:"To breathe out slowly and audibly, expressing sadness, tiredness, or relief",s:"She looked at the huge pile of homework and began to _____.",a:["sighed"]},
-{w:"sitting room",g:"Wohnzimmer",d:"A room in a house where people sit and relax (British English)",s:"The family gathered in the _____ to watch a film together.",a:["sitting rooms","living room"]},
+{w:"sitting room",g:"Wohnzimmer",d:"A comfortable space in a house where people relax (British English)",s:"The family gathered in the _____ to watch a film together.",a:["sitting rooms","living room"]},
 {w:"scare off",g:"verscheuchen",d:"To frighten someone or something so that they go away",s:"The loud noise from the fireworks _____ all the birds in the garden.",cf:"scared off",a:["scare off","scared off","scare away"]},
 {w:"sleeve",g:"Ärmel",d:"The part of a piece of clothing that covers your arm",s:"It's hot today — I wish I had a T-shirt with short _____ instead of this jumper.",cf:"sleeves",a:["sleeve","sleeves"]},
 {w:"possibility",g:"Möglichkeit",d:"Something that might happen or be true",s:"There is always the _____ that it might rain, so bring an umbrella.",a:["possibilities"]},
 ],
 "Unit 10": [
 {w:"oil",g:"Öl",d:"A thick, dark liquid found underground, used as fuel or for making products",s:"Many countries depend on _____ to run their factories and cars.",a:[]},
-{w:"Fair Trade",g:"eine Organisation, die sich für fairen Handel einsetzt",d:"A system of trade that pays farmers and workers in poor countries a fair price",s:"When you buy _____ chocolate, the cocoa farmers get a better price.",a:["fair trade","Fairtrade"]},
+{w:"Fair Trade",g:"eine Organisation, die sich für fairen Handel einsetzt",d:"A system that pays farmers and workers in poor countries a just price for their goods",s:"When you buy _____ chocolate, the cocoa farmers get a better price.",a:["fair trade","Fairtrade"]},
 {w:"farmer",g:"Landwirt/in",d:"A person who owns or works on a farm, growing crops or raising animals",s:"The _____ wakes up early every morning to feed the animals.",a:["farmers"]},
 {w:"make a living",g:"den Lebensunterhalt verdienen",d:"To earn enough money to pay for the things you need in life",s:"It is hard to _____ if you don't have a proper education.",a:["make a living","living"]},
 {w:"pay rise",g:"Gehaltserhöhung",d:"An increase in the amount of money you receive for your work",s:"After working there for two years, she finally asked her boss for a _____.",a:["pay raise"]},
@@ -1209,7 +1227,7 @@ const vocabData = {
 {w:"novel",g:"Roman",d:"A long written story about imaginary people and events",s:"Her favourite _____ is 'The Great Gatsby' — she has read it three times.",a:["novels"]},
 {w:"biography",g:"Biografie",d:"The story of a person's life written by someone else",s:"I'm reading a _____ of Nelson Mandela — his life story is truly inspiring.",a:["biographies"]},
 {w:"short story",g:"Kurzgeschichte",d:"A brief work of fiction that is shorter than a novel",s:"We had to write a _____ for homework — mine was about a boy who finds a magic stone.",a:["short stories"]},
-{w:"book review",g:"Buchrezension",d:"A written opinion about a book, saying whether it is good or not",s:"I read a _____ online and it made me want to buy the book immediately.",a:["book reviews"]},
+{w:"book review",g:"Buchrezension",d:"A written opinion about a text, saying whether it is good or not",s:"I read a _____ online and it made me want to buy the book immediately.",a:["book reviews"]},
 {w:"fence",g:"Zaun",d:"A barrier made of wood or wire around a garden or field",s:"The neighbours put up a new _____ between our gardens last weekend.",a:["fences"]},
 {w:"innocent",g:"unschuldig",d:"Not guilty of a crime; or having little experience of the world",s:"The lawyer argued that his client was completely _____ and had done nothing wrong.",a:[]},
 {w:"disappointment",g:"Enttäuschung",d:"A feeling of sadness because something did not happen as you hoped",s:"Not making the football team was a huge _____ for him.",a:["disappointments"]},
@@ -1217,10 +1235,10 @@ const vocabData = {
 {w:"blurb",g:"Werbetext auf Buchumschlag; Klappentext",d:"A short description on the back cover of a book that tells you what it is about",s:"The _____ on the back of the book sounded so exciting that I bought it straight away.",a:["blurbs"]},
 {w:"millionaire",g:"Millionär/in",d:"A person who has at least one million pounds, dollars, or euros",s:"He started a small company in his garage and became a _____ by the age of 30.",a:["millionaires"]},
 {w:"fairy",g:"Fee",d:"A small imaginary creature with wings and magical powers",s:"In the story, a tiny _____ with silver wings helped the lost children find their way home.",a:["fairies"]},
-{w:"historical novel",g:"historischer Roman",d:"A novel set in a particular period of history",s:"She loves reading about the past, so a _____ is the perfect gift for her.",a:["historical novels"]},
+{w:"historical novel",g:"historischer Roman",d:"A long fiction story set in a particular period of the past",s:"She loves reading about the past, so a _____ is the perfect gift for her.",a:["historical novels"]},
 {w:"reference",g:"Bezug; Hinweis",d:"A mention of or connection to something; also a source of information",s:"The film contains a clever _____ to an old fairy tale that most people know.",a:["references"]},
 {w:"trilogy",g:"Trilogie",d:"A group of three books, films, or plays that are connected and tell one big story",s:"The Lord of the Rings is a famous _____ written by J.R.R. Tolkien.",a:["trilogies"]},
-{w:"answer the door",g:"an die Tür gehen, jdn hereinlassen",d:"To open the door when someone knocks or rings the bell",s:"I was in the shower when someone knocked, so my brother had to _____ .",cf:"answer it",a:["answer the door","answer it"]},
+{w:"answer the door",g:"an die Tür gehen, jdn hereinlassen",d:"To open up when someone knocks or rings the bell",s:"I was in the shower when someone knocked, so my brother had to _____ .",cf:"answer it",a:["answer the door","answer it"]},
 {w:"clear up",g:"aufräumen",d:"To tidy and clean a place by putting things away",s:"After the party, it took us two hours to _____ the whole house.",a:[]},
 {w:"goggles",g:"Schwimmbrille; Schutzbrille",d:"Special glasses that protect your eyes from water, chemicals, or wind",s:"Don't forget your _____ — the chlorine in the pool will hurt your eyes.",a:[]},
 {w:"kilt",g:"Kilt, Schottenrock",d:"A traditional Scottish skirt made of tartan cloth, usually worn by men",s:"When we visited Edinburgh, we saw a man playing bagpipes and wearing a _____.",a:["kilts"]},
@@ -1236,14 +1254,14 @@ const vocabData = {
 {w:"explosion",g:"Explosion",d:"A sudden and violent burst of energy, often causing damage",s:"We heard a loud _____ and then saw smoke rising from the factory.",a:["explosion","explosions"]},
 {w:"orbit",g:"Umlaufbahn",d:"The curved path that a planet or spacecraft follows around a star or planet",s:"The International Space Station is in _____ about 400 kilometres above the Earth.",a:["orbits"]},
 {w:"plaque",g:"Tafel",d:"A flat piece of metal or stone with writing on it, placed on a wall to remember an event",s:"There is a _____ on the wall of the old school showing when it was built.",a:["plaques"]},
-{w:"space shuttle",g:"Raumfähre",d:"A spacecraft designed to carry astronauts into space and return to Earth",s:"The last American _____ flew its final mission in 2011.",a:["space shuttles"]},
+{w:"space shuttle",g:"Raumfähre",d:"A reusable spacecraft designed to carry astronauts into orbit and return to Earth",s:"The last American _____ flew its final mission in 2011.",a:["space shuttles"]},
 {w:"altogether",g:"insgesamt",d:"In total; considering everything",s:"We invited 30 guests, but _____ only 22 people came to the party.",a:[]},
 {w:"atmosphere",g:"Atmosphäre",d:"The layer of gases surrounding the Earth or another planet",s:"Mars has a very thin _____, which makes it difficult for humans to breathe there.",a:[]},
 {w:"crew",g:"Mannschaft; Besatzung",d:"A group of people who work together, especially on a ship, aircraft, or spacecraft",s:"The _____ of the sailing boat worked together to survive the storm.",a:["crews"]},
 {w:"disgusting",g:"ekelhaft",d:"Extremely unpleasant; causing a strong feeling of dislike",s:"The milk in the fridge smells _____. I think it has gone off.",a:[]},
 {w:"engineering",g:"Maschinenbau; Ingenieurwesen",d:"The work of designing and building machines, bridges, roads, or systems",s:"She wants to study _____ at university because she loves building things.",a:[]},
 {w:"mankind",g:"Menschheit",d:"All human beings considered as a group; the human race",s:"Landing on the moon was one of the greatest achievements of _____.",a:["humankind"]},
-{w:"space travel",g:"Raumfahrt",d:"The activity of travelling beyond the Earth's atmosphere into space",s:"Do you think _____ will become normal for ordinary people in the future?",a:[]},
+{w:"space travel",g:"Raumfahrt",d:"The activity of going beyond the Earth's atmosphere into the universe",s:"Do you think _____ will become normal for ordinary people in the future?",a:[]},
 {w:"sunrise",g:"Sonnenaufgang",d:"The time when the sun first appears in the sky in the morning",s:"We woke up early to watch the _____ from the top of the mountain.",a:["sunrises"]},
 {w:"sunset",g:"Sonnenuntergang",d:"The time when the sun disappears below the horizon in the evening",s:"The _____ over the lake was so beautiful that everyone stopped to take photos.",a:["sunsets"]},
 {w:"warning",g:"Warnung",d:"A statement telling someone about a possible danger or problem",s:"The teacher gave him a _____ that he would fail if he didn't start studying.",a:["warnings"]},
@@ -1293,8 +1311,8 @@ const vocabData = {
 {w:"catch up on",g:"aufholen; (Versäumtes) nachholen",d:"To do something that you did not have time to do earlier",s:"I was ill last week, so now I have to _____ all the schoolwork I missed.",a:[]},
 {w:"get involved with",g:"sich auf etw einlassen; mitmischen (bei)",d:"To become part of an activity or start taking part in something",s:"My parents told me not to _____ the wrong group of people.",a:["get involved","getting involved"]},
 {w:"help out",g:"(aus-)helfen",d:"To do some work or give assistance when someone needs it",s:"Can you _____ with the decorations for the school party?",a:[]},
-{w:"kill time",g:"sich die Zeit vertreiben",d:"To do something to make time pass while waiting",s:"Our train was delayed, so we _____ by playing cards at the station.",cf:"killed time",a:["kill time","killed time"]},
-{w:"make money",g:"Geld machen/verdienen",d:"To earn or receive money, especially through work or business",s:"He wants to _____ by selling handmade jewellery online.",a:["money"]},
+{w:"kill time",g:"sich die Zeit vertreiben",d:"To do something to keep busy while waiting",s:"Our train was delayed, so we _____ by playing cards at the station.",cf:"killed time",a:["kill time","killed time"]},
+{w:"make money",g:"Geld machen/verdienen",d:"To earn or receive income, especially through work or business",s:"He wants to _____ by selling handmade jewellery online.",a:["money"]},
 {w:"take care of",g:"Acht geben auf, sorgen für",d:"To look after someone or something and make sure they are safe and well",s:"When my mum is at work, my grandma comes to _____ us.",a:[]},
 {w:"take up",g:"anfangen",d:"To start doing a new activity, hobby, or sport",s:"I'd like to _____ guitar lessons, but I'm not sure I have enough time.",a:[]},
 {w:"attend",g:"an etw teilnehmen; etw besuchen",d:"To go to an event, meeting, or institution",s:"Over 500 students _____ the school concert last Friday.",cf:"attended",a:["attend","attended"]},
@@ -1405,7 +1423,7 @@ async function handlePinSubmit() {
     await studentsRef.doc(pendingLoginId).update({ lastActive: firebase.firestore.FieldValue.serverTimestamp() });
     state.studentId = pendingLoginId;
     state.studentName = pendingLoginName;
-    localStorage.setItem('4b-vocab-student', JSON.stringify({ id: pendingLoginId, name: pendingLoginName, pin: pin }));
+    localStorage.setItem('4th-grade-vocab-student', JSON.stringify({ id: pendingLoginId, name: pendingLoginName, pin: pin }));
     await loadProgress();
     showHomeScreen();
   } catch (e) {
@@ -1447,7 +1465,7 @@ async function handleSetPin() {
     }
     state.studentId = pendingLoginId;
     state.studentName = pendingLoginName;
-    localStorage.setItem('4b-vocab-student', JSON.stringify({ id: pendingLoginId, name: pendingLoginName, pin: pin }));
+    localStorage.setItem('4th-grade-vocab-student', JSON.stringify({ id: pendingLoginId, name: pendingLoginName, pin: pin }));
     await loadProgress();
     showHomeScreen();
   } catch (e) {
@@ -1548,7 +1566,7 @@ async function saveSessionResults() {
 }
 
 function logout() {
-  localStorage.removeItem('4b-vocab-student');
+  localStorage.removeItem('4th-grade-vocab-student');
   state.studentId = null;
   state.studentName = null;
   state.studentData = null;
@@ -1800,7 +1818,7 @@ function initSourceGrid() {
 
 function showHomeScreen() {
   // Welcome
-  document.getElementById('welcome-name').innerHTML = `${state.studentName} <small>4B</small>`;
+  document.getElementById('welcome-name').innerHTML = `${state.studentName} <small>4th Grade</small>`;
 
   // Stats
   const d = state.studentData || {};
@@ -1915,7 +1933,7 @@ function practiceWeakWords() {
 
 function getTaskType() {
   if (state.exerciseType !== 'mix') return state.exerciseType;
-  const types = ['context', 'context-hard', 'definition', 'translation'];
+  const types = ['context', 'context-hard', 'definition', 'definition-hard', 'translation'];
   return types[Math.floor(Math.random() * types.length)];
 }
 
@@ -1963,8 +1981,9 @@ function showWord() {
 
   const label = document.getElementById('task-label');
   const isContext = type === 'context' || type === 'context-hard';
-  label.className = 'task-type-label ' + (isContext ? 'context' : type);
-  label.textContent = isContext ? 'Complete the sentence' : type === 'definition' ? 'Guess the word' : 'Translate to English';
+  const isDef = type === 'definition' || type === 'definition-hard';
+  label.className = 'task-type-label ' + (isContext ? 'context' : isDef ? 'definition' : type);
+  label.textContent = isContext ? 'Complete the sentence' : isDef ? 'Guess the word' : 'Translate to English';
 
   const prompt = document.getElementById('quiz-prompt');
   if (isContext) {
@@ -1982,8 +2001,23 @@ function showWord() {
       const letter = firstContent[0].toLowerCase();
       prompt.innerHTML = word.s.replace('_____', `<span class="gap gap-hard">${letter}<span class="gap-line"></span></span>`);
     }
-  } else if (type === 'definition') {
-    prompt.innerHTML = `<em>${word.d}</em>`;
+  } else if (isDef) {
+    if (type === 'definition') {
+      // Easy mode: show first letter pattern + word count
+      const cleaned = word.w.replace(/^to\s+/, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim().replace(/\s+/g, ' ');
+      const answerWords = cleaned.split(' ').filter(w => w.length > 0);
+      const wordCount = answerWords.length;
+      const small = new Set(['a','an','the','in','on','of','for','at','up','out','by','with','off','down','your','my','own','too','many','no']);
+      const hintParts = answerWords.map(w => {
+        if (small.has(w.toLowerCase()) && answerWords.length > 1) return w;
+        return w[0].toLowerCase() + '_'.repeat(Math.max(w.length - 1, 1));
+      }).join(' ');
+      const countLabel = wordCount === 1 ? '1 word' : `${wordCount} words`;
+      prompt.innerHTML = `<em>${word.d}</em><div class="def-hint"><span class="def-hint-letter">${hintParts}</span><span class="def-hint-count">${countLabel}</span></div>`;
+    } else {
+      // Hard mode: just the definition, no hints
+      prompt.innerHTML = `<em>${word.d}</em>`;
+    }
   } else {
     prompt.innerHTML = `<span class="german-word">${word.g}</span>`;
   }
@@ -2135,7 +2169,7 @@ document.addEventListener('keydown', e => {
 // ===== INIT =====
 (async function() {
   // Check for saved session (auto-login only if PIN matches)
-  const saved = localStorage.getItem('4b-vocab-student');
+  const saved = localStorage.getItem('4th-grade-vocab-student');
   if (saved) {
     try {
       const { id, name, pin } = JSON.parse(saved);
@@ -2152,7 +2186,7 @@ document.addEventListener('keydown', e => {
         }
       }
     } catch (e) { console.error('Auto-login error:', e); }
-    localStorage.removeItem('4b-vocab-student');
+    localStorage.removeItem('4th-grade-vocab-student');
   }
 })();
 </script>
