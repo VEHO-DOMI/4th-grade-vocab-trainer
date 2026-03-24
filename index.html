@@ -795,6 +795,40 @@ body.playing h1, body.playing .subtitle { display: none; }
 
 /* Selection color */
 ::selection { background: rgba(139,92,246,0.3); color: var(--text); }
+
+/* Card slide animations */
+@keyframes slideOutLeft { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-60px); opacity: 0; } }
+@keyframes slideInRight { from { transform: translateX(60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes flashCorrect { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 50% { box-shadow: 0 0 0 8px rgba(34,197,94,0.15); } 100% { box-shadow: var(--shadow-card); } }
+@keyframes flashWrong { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); } 50% { box-shadow: 0 0 0 8px rgba(239,68,68,0.15); } 100% { box-shadow: var(--shadow-card); } }
+.card-slide-out { animation: slideOutLeft 0.18s ease-in forwards; }
+.card-slide-in { animation: slideInRight 0.22s ease-out forwards; }
+.flash-correct { animation: flashCorrect 0.45s ease-out; }
+.flash-wrong { animation: flashWrong 0.45s ease-out; }
+
+/* Word of the Day */
+#wotd-card { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.15); color: rgba(255,255,255,0.9); border-radius: var(--radius-lg); padding: 1rem 1.1rem; margin-bottom: 0.8rem; width: 100%; }
+#wotd-card .wotd-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--accent2); margin-bottom: 0.4rem; }
+#wotd-card .wotd-word { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.15rem; }
+#wotd-card .wotd-german { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem; }
+#wotd-card .wotd-def { font-size: 0.78rem; opacity: 0.6; font-style: italic; line-height: 1.4; }
+
+/* Weekly Class Goal */
+#weekly-goal { background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.12); color: rgba(255,255,255,0.9); border-radius: var(--radius-lg); padding: 1rem 1.1rem; margin-bottom: 0.8rem; width: 100%; }
+#weekly-goal .wg-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; }
+#weekly-goal .wg-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--accent2); }
+#weekly-goal .wg-week { font-size: 0.65rem; opacity: 0.5; }
+#wg-track { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 0.4rem; }
+#wg-fill { background: linear-gradient(90deg, #8b5cf6, #a78bfa); height: 100%; border-radius: 5px; transition: width 0.6s ease; min-width: 0; }
+#wg-stats { display: flex; justify-content: space-between; font-size: 0.72rem; }
+#wg-current { color: #a78bfa; font-weight: 700; }
+#wg-target { opacity: 0.5; }
+.wg-reached #wg-fill { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.wg-reached #wg-current { color: #4ade80; }
+
+/* Sound toggle */
+.sound-toggle { position: absolute; top: 0.5rem; right: 0.5rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; padding: 4px; }
+.sound-toggle:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
@@ -864,7 +898,10 @@ body.playing h1, body.playing .subtitle { display: none; }
         <div class="welcome-xp" id="welcome-xp"></div>
       </div>
     </div>
-    <button class="logout-btn" onclick="logout()">Log Out</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="logout-btn" onclick="toggleSfx()" id="sfx-toggle-btn" title="Toggle sounds">🔊</button>
+      <button class="logout-btn" onclick="logout()">Log Out</button>
+    </div>
   </div>
 
   <div id="rank-display" style="display:none;text-align:center;margin:0 0 16px;">
@@ -883,6 +920,25 @@ body.playing h1, body.playing .subtitle { display: none; }
     <div class="stat-card"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Streak 🔥</div></div>
   </div>
 
+
+  <div id="wotd-card" style="display:none;">
+    <div class="wotd-label">Word of the Day</div>
+    <div class="wotd-word" id="wotd-word"></div>
+    <div class="wotd-german" id="wotd-german"></div>
+    <div class="wotd-def" id="wotd-def"></div>
+  </div>
+
+  <div id="weekly-goal" style="display:none;">
+    <div class="wg-header">
+      <span class="wg-title">Weekly Class Goal</span>
+      <span class="wg-week" id="wg-week"></span>
+    </div>
+    <div id="wg-track"><div id="wg-fill" style="width:0%"></div></div>
+    <div id="wg-stats">
+      <span id="wg-current">0 XP</span>
+      <span id="wg-target">Goal: 4,000 XP</span>
+    </div>
+  </div>
 
   <div class="badge-row" id="badge-row"></div>
 
@@ -1789,32 +1845,95 @@ function showComboLost() {
   setTimeout(() => { el.style.display = 'none'; }, 1000);
 }
 
-let _levelUpQueue = [];
 function showLevelUpQueue(levels) {
-  _levelUpQueue = [...levels];
-  _showNextLevelUp();
-}
-function _showNextLevelUp() {
-  if (_levelUpQueue.length === 0) return;
-  const lv = _levelUpQueue.shift();
-  showLevelUp(lv, () => { setTimeout(_showNextLevelUp, 300); });
-}
-function showLevelUp(lv, onDismiss) {
+  if (!levels || levels.length === 0) return;
+  const lv = levels[0];
+  const remaining = levels.slice(1);
+  SFX.play('levelup');
   const overlay = document.createElement('div');
   overlay.id = 'level-up-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:10000;animation:fadeIn 0.3s ease;';
   const zc = ZONE_COLORS[lv.zone];
   const card = document.createElement('div');
   card.style.cssText = `background:linear-gradient(145deg,${zc.bg},${zc.accent});border-radius:20px;padding:32px 40px;text-align:center;color:#fff;max-width:320px;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);`;
-  const avHtml = state.avatarId ? `<img src="${avatarSrc(state.avatarId)}" style="width:56px;height:56px;border-radius:14px;margin-bottom:8px;">` : '<div style="font-size:42px;margin-bottom:8px;">\u2694\uFE0F</div>';
-  const moreText = _levelUpQueue.length > 0 ? `<div style="font-size:11px;opacity:0.5;margin-top:8px;">${_levelUpQueue.length} more level${_levelUpQueue.length > 1 ? 's' : ''} unlocked!</div>` : '';
-  function dismiss() { overlay.remove(); if (onDismiss) onDismiss(); }
-  card.innerHTML = `${avHtml}<div style="font-size:13px;text-transform:uppercase;letter-spacing:2px;opacity:0.8;">Level Up!</div><div style="font-size:28px;font-weight:700;margin:8px 0 4px;">Lv ${lv.level}</div><div style="font-size:20px;font-weight:600;margin-bottom:4px;">${lv.name}</div><div style="font-size:13px;opacity:0.7;font-style:italic;margin-bottom:20px;">${lv.vibe}</div><div style="display:inline-block;padding:4px 16px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;background:rgba(255,255,255,0.2);">${lv.zone} zone</div>${moreText}<div style="margin-top:20px;"><button id="level-up-dismiss-btn" style="background:rgba(255,255,255,0.25);color:#fff;border:none;padding:10px 28px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Nice!</button></div>`;
+  const moreText = remaining.length > 0 ? `<div style="font-size:11px;opacity:0.6;margin-top:12px;">${remaining.length} more level-up${remaining.length > 1 ? 's' : ''}...</div>` : '';
+  card.innerHTML = `<div style="font-size:42px;margin-bottom:8px;">⚔️</div><div style="font-size:13px;text-transform:uppercase;letter-spacing:2px;opacity:0.8;">Level Up!</div><div style="font-size:28px;font-weight:700;margin:8px 0 4px;">Lv ${lv.level}</div><div style="font-size:20px;font-weight:600;margin-bottom:4px;">${lv.name}</div><div style="font-size:13px;opacity:0.7;font-style:italic;margin-bottom:20px;">${lv.vibe}</div><div style="display:inline-block;padding:4px 16px;border-radius:12px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;background:rgba(255,255,255,0.2);">${lv.zone} zone</div>${moreText}<div style="margin-top:20px;"><button onclick="this.closest('#level-up-overlay').remove();showLevelUpQueue(window._levelUpQueue);" style="background:rgba(255,255,255,0.25);color:#fff;border:none;padding:10px 28px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;">${remaining.length > 0 ? 'Next →' : 'Nice!'}</button></div>`;
+  window._levelUpQueue = remaining;
   overlay.appendChild(card);
-  card.querySelector('#level-up-dismiss-btn').onclick = dismiss;
-  overlay.addEventListener('click', e => { if (e.target === overlay) dismiss(); });
   document.body.appendChild(overlay);
-  setTimeout(() => { if (document.getElementById('level-up-overlay')) dismiss(); }, 5000);
+}
+
+// ===== SOUND EFFECTS =====
+const SFX = {
+  ctx: null, enabled: true, unlocked: false,
+  init() {
+    this.enabled = localStorage.getItem('sfx-off') !== '1';
+    const btn = document.getElementById('sfx-toggle-btn');
+    if (btn) btn.textContent = this.enabled ? '🔊' : '🔇';
+    const unlock = () => {
+      if (this.unlocked) return;
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+      this.unlocked = true;
+    };
+    document.addEventListener('touchstart', unlock, { once: true });
+    document.addEventListener('click', unlock, { once: true });
+  },
+  play(name) {
+    if (!this.enabled || !this.ctx) return;
+    try {
+      const o = this.ctx.createOscillator();
+      const g = this.ctx.createGain();
+      o.connect(g); g.connect(this.ctx.destination);
+      const t = this.ctx.currentTime;
+      if (name === 'correct') {
+        o.frequency.setValueAtTime(523.25, t);
+        o.frequency.setValueAtTime(659.25, t + 0.08);
+        o.frequency.setValueAtTime(783.99, t + 0.16);
+        g.gain.setValueAtTime(0.12, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        o.start(t); o.stop(t + 0.35);
+      } else if (name === 'wrong') {
+        o.frequency.setValueAtTime(311.13, t);
+        o.frequency.setValueAtTime(233.08, t + 0.15);
+        g.gain.setValueAtTime(0.12, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        o.start(t); o.stop(t + 0.35);
+      } else if (name === 'combo') {
+        o.frequency.setValueAtTime(587.33, t);
+        o.frequency.setValueAtTime(783.99, t + 0.06);
+        o.frequency.setValueAtTime(1046.50, t + 0.12);
+        g.gain.setValueAtTime(0.1, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        o.start(t); o.stop(t + 0.3);
+      } else if (name === 'levelup') {
+        o.type = 'triangle';
+        [523.25,659.25,783.99,1046.50].forEach((f,i) => o.frequency.setValueAtTime(f, t + i*0.12));
+        g.gain.setValueAtTime(0.13, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+        o.start(t); o.stop(t + 0.6);
+      } else if (name === 'click') {
+        o.frequency.setValueAtTime(1200, t);
+        g.gain.setValueAtTime(0.06, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+        o.start(t); o.stop(t + 0.06);
+      } else if (name === 'combolost') {
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(400, t);
+        o.frequency.exponentialRampToValueAtTime(200, t + 0.3);
+        g.gain.setValueAtTime(0.08, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        o.start(t); o.stop(t + 0.35);
+      }
+    } catch(e) {}
+  }
+};
+
+function toggleSfx() {
+  SFX.enabled = !SFX.enabled;
+  localStorage.setItem('sfx-off', SFX.enabled ? '0' : '1');
+  const btn = document.getElementById('sfx-toggle-btn');
+  if (btn) btn.textContent = SFX.enabled ? '🔊' : '🔇';
 }
 
 const XP_TABLE = { 'context': 5, 'context-hard': 8, 'definition': 6, 'definition-hard': 10, 'translation': 7, 'mc-context': 3, 'mc-definition': 4, 'mc-translation': 5 };
@@ -2353,6 +2472,7 @@ async function saveSessionResults() {
     }
     await studentsRef.doc(state.studentId).update(updateObj);
     state.studentData.xp = (state.studentData.xp || 0) + earnedXP;
+    addWeeklyGoalXP(earnedXP);
     state.studentData.streak = streakUpdate.streak;
     state.studentData.lastSessionDate = streakUpdate.lastSessionDate;
     state.studentData.exerciseTypesUsed = allUsed;
@@ -2678,6 +2798,8 @@ function showHomeScreen() {
   updateRankDisplay();
   renderBadgeRow();
   renderDailyCard();
+  renderWOTD();
+  loadWeeklyGoal();
 
   // Smart review
   const reviewWords = getSmartReviewWords();
@@ -2912,7 +3034,9 @@ function getDistractors(word, count, type) {
       const sameType = (isVerb && /^to\s/.test(e.w)) || (!isVerb && !/^to\s/.test(e.w));
       // Prefer same source (unit) for topical relevance
       const sameSource = src === word.source;
-      const score = (sameType ? 3 : 0) + (sameSource ? 2 : 0) + (shared > 0 ? -5 : 0) + Math.random() * 2;
+      const lenDiff = Math.abs(ans.length - correct.length);
+      const similarLen = lenDiff <= 4 ? 2 : lenDiff <= 8 ? 1 : 0;
+      const score = (sameType ? 4 : 0) + similarLen + (!sameSource ? 1 : 0) + (shared > 0 ? -8 : 0) + Math.random() * 1.5;
       pool.push({ entry: e, score, ans });
     }
   }
@@ -2948,8 +3072,8 @@ function getMCAnswer(word, type) {
     return word.w.replace(/^to\s+/, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim().replace(/\s+/g, ' ');
   }
   if (type === 'mc-context' || type === 'context' || type === 'context-hard') {
-    // For context MC, use the context form (what fits in the blank)
-    return getContextForm(word);
+    const cf = word.cf || word.w;
+    return cf.replace(/^to\s+/i, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim();
   }
   // Definition MC — full word
   return word.w.replace(/^to\s+/, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim().replace(/\s+/g, ' ');
@@ -2998,6 +3122,7 @@ function handleMCClick(btn, correct, word, type, grid) {
   const allBtns = grid.querySelectorAll('.mc-option');
   allBtns.forEach(b => b.classList.add('disabled'));
 
+  SFX.play('click');
   if (correct) {
     btn.classList.add('correct');
     state.score++;
@@ -3005,13 +3130,17 @@ function handleMCClick(btn, correct, word, type, grid) {
     if (state.comboStreak > state.comboMax) state.comboMax = state.comboStreak;
     state.comboMult = getComboTier(state.comboStreak).mult;
     updateComboBadge();
+    SFX.play(state.comboStreak >= 3 ? 'combo' : 'correct');
+    const qcMC = document.getElementById('quiz-card'); if (qcMC) { qcMC.classList.remove('flash-correct','flash-wrong'); void qcMC.offsetWidth; qcMC.classList.add('flash-correct'); }
     state.results.push({ word, correct: true, userAnswer: btn.textContent, type: state.currentType, comboMult: state.comboMult });
     if (state.isSpeedRound) showXPFloat();
     setTimeout(() => { nextWord(); }, state.isSpeedRound ? 400 : 800);
   } else {
-    if (state.comboStreak >= 3) showComboLost();
+    SFX.play('wrong');
+    if (state.comboStreak >= 3) { showComboLost(); SFX.play('combolost'); }
     state.comboStreak = 0; state.comboMult = 1; updateComboBadge();
     btn.classList.add('wrong');
+    const qcMCW = document.getElementById('quiz-card'); if (qcMCW) { qcMCW.classList.remove('flash-correct','flash-wrong'); void qcMCW.offsetWidth; qcMCW.classList.add('flash-wrong'); }
     allBtns.forEach(b => { if (!b.classList.contains('wrong')) b.classList.add('reveal'); });
     const correctAnswer = getMCAnswer(word, type).toLowerCase().trim();
     allBtns.forEach(b => { if (b.textContent.toLowerCase().trim() === correctAnswer) b.classList.add('correct'); });
@@ -3076,8 +3205,22 @@ function getFirstLetterHint(word, showLetterCount) {
   }
 }
 
+let _skipAnim = false;
 function showWord() {
   if (state.isSpeedRound && state.speedTimeLeft <= 0) return;
+  const quizCard = document.getElementById('quiz-card');
+  if (!_skipAnim && quizCard && state.currentIdx > 0) {
+    quizCard.classList.add('card-slide-out');
+    _skipAnim = true;
+    setTimeout(() => {
+      quizCard.classList.remove('card-slide-out');
+      showWord();
+      quizCard.classList.add('card-slide-in');
+      setTimeout(() => quizCard.classList.remove('card-slide-in'), 250);
+    }, 180);
+    return;
+  }
+  _skipAnim = false;
   if (state.currentIdx >= state.words.length) {
     if (state.isSpeedRound) { endSpeedRound(); return; }
     endPractice(); return;
@@ -3190,18 +3333,22 @@ function checkAnswer() {
     if (state.comboStreak > state.comboMax) state.comboMax = state.comboStreak;
     state.comboMult = getComboTier(state.comboStreak).mult;
     updateComboBadge();
+    SFX.play(state.comboStreak >= 3 ? 'combo' : 'correct');
     input.className = 'answer-input correct';
     feedback.className = 'feedback correct';
     feedback.innerHTML = 'Correct!';
+    const qc = document.getElementById('quiz-card'); if (qc) { qc.classList.remove('flash-correct','flash-wrong'); void qc.offsetWidth; qc.classList.add('flash-correct'); }
     if (state.isSpeedRound) {
       state.results.push({ word, correct: true, userAnswer, type: state.currentType, comboMult: state.comboMult });
       showXPFloat(); setTimeout(nextWord, 400); return;
     }
   } else {
-    if (state.comboStreak >= 3) showComboLost();
+    SFX.play('wrong');
+    if (state.comboStreak >= 3) { showComboLost(); SFX.play('combolost'); }
     state.comboStreak = 0; state.comboMult = 1; updateComboBadge();
     input.className = 'answer-input wrong';
     feedback.className = 'feedback wrong';
+    const qcW = document.getElementById('quiz-card'); if (qcW) { qcW.classList.remove('flash-correct','flash-wrong'); void qcW.offsetWidth; qcW.classList.add('flash-wrong'); }
     const isCtx = state.currentType === 'context' || state.currentType === 'context-hard';
     const isDef = state.currentType === 'definition' || state.currentType === 'definition-hard';
     let displayAnswer;
@@ -3428,9 +3575,91 @@ function handleSectionSubmit() {
 
 document.getElementById('section-pin')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleSectionSubmit(); });
 
+// ===== WORD OF THE DAY =====
+function getWordOfTheDay() {
+  const allWords = [];
+  for (const entries of Object.values(vocabData)) {
+    for (const w of entries) allWords.push(w);
+  }
+  if (allWords.length === 0) return null;
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  return allWords[seed % allWords.length];
+}
+
+function renderWOTD() {
+  const word = getWordOfTheDay();
+  const card = document.getElementById('wotd-card');
+  if (!word || !card) return;
+  document.getElementById('wotd-word').textContent = word.w;
+  document.getElementById('wotd-german').textContent = word.g;
+  document.getElementById('wotd-def').textContent = word.d;
+  card.style.display = '';
+}
+
+// ===== WEEKLY CLASS GOAL =====
+const WEEKLY_GOAL_TARGET = 4000;
+let weeklyGoalRef = null;
+
+function getWeekId() {
+  const d = new Date();
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const days = Math.floor((d - jan1) / 86400000);
+  const week = Math.ceil((days + jan1.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${String(week).padStart(2, '0')}`;
+}
+
+function getWeekLabel() {
+  const d = new Date();
+  const day = d.getDay();
+  const mon = new Date(d); mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const fmt = (dt) => `${dt.getDate()}.${dt.getMonth()+1}.`;
+  return `${fmt(mon)} – ${fmt(sun)}`;
+}
+
+async function loadWeeklyGoal() {
+  if (!classRef) return;
+  const weekId = getWeekId();
+  weeklyGoalRef = classRef.collection('weeklyGoals').doc(weekId);
+  try {
+    const doc = await weeklyGoalRef.get();
+    const data = doc.exists ? doc.data() : { xp: 0, contributors: {} };
+    renderWeeklyGoal(data.xp || 0);
+  } catch(e) { console.error('Weekly goal load error:', e); }
+}
+
+async function addWeeklyGoalXP(xp) {
+  if (!weeklyGoalRef || !state.studentId) return;
+  try {
+    await weeklyGoalRef.set({
+      xp: firebase.firestore.FieldValue.increment(xp),
+      ['contributors.' + state.studentId]: firebase.firestore.FieldValue.increment(xp),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  } catch(e) { console.error('Weekly goal update error:', e); }
+}
+
+function renderWeeklyGoal(currentXP) {
+  const el = document.getElementById('weekly-goal');
+  if (!el) return;
+  el.style.display = '';
+  const pct = Math.min(100, (currentXP / WEEKLY_GOAL_TARGET) * 100);
+  document.getElementById('wg-fill').style.width = pct + '%';
+  document.getElementById('wg-current').textContent = currentXP.toLocaleString() + ' XP';
+  document.getElementById('wg-target').textContent = 'Goal: ' + WEEKLY_GOAL_TARGET.toLocaleString() + ' XP';
+  document.getElementById('wg-week').textContent = getWeekLabel();
+  if (currentXP >= WEEKLY_GOAL_TARGET) {
+    el.classList.add('wg-reached');
+  } else {
+    el.classList.remove('wg-reached');
+  }
+}
+
 // ===== INIT =====
 (async function() {
   initSectionScreen();
+  SFX.init();
 
   // Check for saved session (auto-login with section)
   const savedSection = localStorage.getItem(LS_KEY + '-section');
