@@ -410,6 +410,7 @@ h1 { display: none; }
 .task-type-label.context { background: rgba(96,165,250,0.12); color: var(--context-color); border: 1px solid rgba(96,165,250,0.15); }
 .task-type-label.definition, .task-type-label.definition-hard { background: rgba(251,191,36,0.1); color: var(--def-color); border: 1px solid rgba(251,191,36,0.12); }
 .task-type-label.translation { background: rgba(244,114,182,0.1); color: var(--trans-color); border: 1px solid rgba(244,114,182,0.12); }
+.task-type-label.collocation { background: rgba(20,184,166,0.12); color: #14b8a6; border: 1px solid rgba(20,184,166,0.15); }
 
 .quiz-prompt {
   font-size: 1.12rem; line-height: 1.7; margin-bottom: 1.4rem; color: var(--text);
@@ -1771,7 +1772,7 @@ const vocabData = {
 {w:"government",g:"Regierung",d:"The group of people who officially control and make decisions for a country",s:"The _____ has decided to build more schools in rural areas.",a:[],mc:["parliament","ministry","authority"]},
 {w:"grain",g:"Getreide",d:"Seeds from plants like wheat, rice, or barley used as food",s:"This region produces more _____ than any other area in the country.",a:["grains"],mc:["flour","cereal","corn"]},
 {w:"incident",g:"Zwischenfall",d:"An event, especially one that is unusual, unpleasant, or violent",s:"There was a serious _____ at school today — two boys got into a fight.",a:["incidents"],mc:["accident","occasion","event"]},
-{w:"intention",g:"Absicht, Vorhaben",d:"A plan or aim to do something",s:"It was never my _____ to hurt your feelings. I'm really sorry.",a:["intentions"],mc:["attention","ambition","decision"]},
+{w:"intention",g:"Absicht, Vorhaben",d:"A plan or aim to do something",s:"It was never my _____ to hurt your feelings. I'm really sorry.",a:["intentions"],mc:["attention","ambition","decision"],col:[{phrase:"have no intention",gap:"have no _____ of leaving",answer:"intention"},{phrase:"good intentions",gap:"He had good _____.",answer:"intentions"}]},
 {w:"interfere",g:"sich einmischen; in Konflikt geraten",d:"To get involved in a situation where you are not wanted or needed",s:"Please don't _____ when I'm talking to my friends about our problems.",a:[],mc:["interrupt","involve","interact"]},
 {w:"landlord",g:"Grundbesitzer; Vermieter",d:"A person who owns land or a building and rents it to others",s:"Our _____ said he would fix the broken window next week.",a:["landlords"],mc:["tenant","neighbour","owner"]},
 {w:"majority",g:"Mehrheit",d:"The larger number or part of something; more than half",s:"The _____ of students in our class voted to go on a trip to Vienna.",a:[],mc:["minority","quantity","authority"]},
@@ -1796,7 +1797,7 @@ const vocabData = {
 {w:"suspect",g:"Verdächtige/r",d:"A person believed to have committed a crime",s:"The police arrested the main _____ just two hours after the robbery.",a:["suspects"],mc:["witness","victim","prisoner"]},
 {w:"criminal",g:"Verbrecher/in",d:"A person who has committed a crime",s:"The _____ was caught on CCTV stealing from the shop late at night.",a:["criminals"],mc:["prisoner","suspect","detective"]},
 {w:"to steal",g:"stehlen",d:"To take something that belongs to someone else without permission",s:"Someone _____ her bag while she was sitting on the train.",cf:"stole",a:["steal","stole","stolen"],mc:["to rob","to cheat","to borrow"]},
-{w:"evidence",g:"Beweis",d:"Facts or information that show whether something is true or not",s:"The detective found important _____ at the crime scene — a fingerprint on the window.",a:[],mc:["proof","clue","witness"]},
+{w:"evidence",g:"Beweis",d:"Facts or information that show whether something is true or not",s:"The detective found important _____ at the crime scene — a fingerprint on the window.",a:[],mc:["proof","clue","witness"],col:[{phrase:"find evidence",gap:"find _____",answer:"evidence"},{phrase:"strong evidence",gap:"_____ evidence",answer:"strong"}]},
 {w:"victim",g:"Opfer",d:"A person who has been hurt, damaged, or killed as a result of a crime or accident",s:"The _____ of the robbery was taken to hospital with minor injuries.",a:["victims"],mc:["witness","suspect","survivor"]},
 {w:"blackmail",g:"Erpressung",d:"The crime of demanding money from someone by threatening to reveal their secrets",s:"He was charged with _____ after threatening to share private photos unless he was paid.",a:[],mc:["robbery","fraud","bribery"]},
 {w:"murder",g:"Mord",d:"The crime of deliberately killing another person",s:"The detective was called to investigate a _____ that had taken place downtown.",a:[],mc:["assault","robbery","manslaughter"]},
@@ -1805,7 +1806,7 @@ const vocabData = {
 {w:"chest",g:"Brust",d:"The front part of the body between the neck and the stomach",s:"He felt a sharp pain in his _____ and decided to see a doctor.",a:[],mc:["stomach","shoulder","throat"]},
 {w:"employee",g:"Angestellte/r",d:"A person who is paid to work for a company or organisation",s:"The company has over 500 _____ working in offices around the world.",cf:"employees",a:["employee","employees"],mc:["employer","colleague","assistant"]},
 {w:"mystery",g:"Rätsel; Geheimnis",d:"Something strange or unknown that has not been explained",s:"Nobody knows who left the flowers on her desk — it's a complete _____.",a:["mysteries"],mc:["secret","puzzle","miracle"]},
-{w:"report",g:"Bericht",d:"A written or spoken account of something that has happened",s:"The teacher asked us to write a _____ about what happened on our school trip.",a:["reports"],mc:["article","statement","review"]},
+{w:"report",g:"Bericht",d:"A written or spoken account of something that has happened",s:"The teacher asked us to write a _____ about what happened on our school trip.",a:["reports"],mc:["article","statement","review"],col:[{phrase:"write a report",gap:"write a _____",answer:"report"},{phrase:"file a report",gap:"file a _____ with the police",answer:"report"}]},
 {w:"attractive",g:"attraktiv",d:"Pleasant to look at; good-looking",s:"The old town centre is very _____ to tourists, and thousands of people visit every year.",a:[],mc:["charming","handsome","elegant"]},
 {w:"nephew",g:"Neffe",d:"The son of your brother or sister",s:"My sister just had a baby boy, so now I have a little _____.",a:["nephews"],mc:["niece","cousin","godson"]},
 {w:"office clerk",g:"Büroangestellte/r",d:"A person who works at a desk doing tasks like filing and answering calls",s:"He got a job as an _____ and spends most of his day answering emails.",a:["office clerks"],mc:["shop assistant","bank teller","receptionist"]},
@@ -1827,11 +1828,11 @@ const vocabData = {
 {w:"suspicion",g:"Verdacht",d:"A feeling that someone has done something wrong, without proof",s:"I have a _____ that someone has been reading my diary.",a:["suspicions"],mc:["accusation","impression","assumption"]},
 {w:"wastepaper bin",g:"Papierkorb",d:"A container for throwing away unwanted paper and small items",s:"She crumpled up the old note and tossed it into the _____.",a:["wastepaper basket"],mc:["recycling bin","rubbish bag","dustbin"]},
 {w:"excellent",g:"hervorragend, großartig",d:"Extremely good; outstanding",s:"The food at the new restaurant was _____ -- the best meal I've ever had.",a:[],mc:["outstanding","brilliant","remarkable"]},
-{w:"conclusion",g:"Schlussfolgerung",d:"A judgement or decision you reach after thinking about something",s:"After looking at all the clues, the detective came to the _____ that it was the neighbour.",a:["conclusions"],mc:["solution","decision","assumption"]},
+{w:"conclusion",g:"Schlussfolgerung",d:"A judgement or decision you reach after thinking about something",s:"After looking at all the clues, the detective came to the _____ that it was the neighbour.",a:["conclusions"],mc:["solution","decision","assumption"],col:[{phrase:"come to a conclusion",gap:"come to a _____",answer:"conclusion"},{phrase:"draw a conclusion",gap:"draw a _____",answer:"conclusion"}]},
 {w:"get hold of sth",g:"etwas in die Hände bekommen",d:"To manage to find or obtain something",s:"The book is sold out everywhere, but I'm trying to _____ a copy before school starts.",cf:"get hold of",a:["get hold of sth","get hold of something","get hold of"],mc:["get rid of sth","get used to sth","take care of sth"]},
 {w:"prove",g:"beweisen",d:"To show that something is true by providing facts or evidence",s:"She says she was at home all evening, but she can't _____ it.",a:[],mc:["confirm","convince","demonstrate"]},
 {w:"historical",g:"historisch",d:"Relating to events or people in the past",s:"We visited several _____ places in Rome, including the Colosseum.",a:[],mc:["ancient","traditional","cultural"]},
-{w:"commit",g:"begehen",d:"To do something illegal or harmful",s:"People who _____ crimes should be punished by the law.",a:[],mc:["perform","attempt","confess"]},
+{w:"commit",g:"begehen",d:"To do something illegal or harmful",s:"People who _____ crimes should be punished by the law.",a:[],mc:["perform","attempt","confess"],col:[{phrase:"commit a crime",gap:"_____ a crime",answer:"commit"},{phrase:"commit a mistake",gap:"_____ a serious mistake",answer:"commit"}]},
 {w:"escape",g:"entkommen, flüchten",d:"To get away from a dangerous place or situation",s:"The cat managed to _____ from the house through an open window.",a:["escape","escaped"],mc:["retreat","flee","hide"]},
 {w:"investigation",g:"Ermittlungen; Untersuchung",d:"The process of trying to find out all the facts about something, especially a crime",s:"The _____ into the missing painting took the police several months.",a:["investigations"],mc:["examination","experiment","inspection"]},
 {w:"common",g:"häufig; gewöhnlich",d:"Happening often; usual or ordinary",s:"Headaches are very _____ when you spend too much time looking at screens.",a:[],mc:["ordinary","frequent","popular"]},
@@ -1859,7 +1860,7 @@ const vocabData = {
 {w:"rescue boat",g:"Rettungsboot",d:"A vessel used to save people from danger, especially at sea",s:"A _____ was sent out to help the swimmers who got caught in the storm.",a:["rescue boat","rescue boats"],mc:["lifeboat","fishing boat","sailing boat"]},
 {w:"runway",g:"Landebahn",d:"A long, flat surface at an airport where planes take off and land",s:"The plane waited on the _____ for ten minutes before it was allowed to take off.",a:["runways"],mc:["motorway","platform","terminal"]},
 {w:"takeoff",g:"Abflug, Start",d:"The moment when a plane leaves the ground and begins to fly",s:"I always feel nervous during _____ because the plane shakes a little.",a:["take-off","take off"],mc:["departure","landing","boarding"]},
-{w:"treatment",g:"Behandlung",d:"Medical care given to a patient for an illness or injury",s:"The doctor said she needs _____ for her knee injury.",a:["treatment","treatments"],mc:["diagnosis","surgery","therapy"]},
+{w:"treatment",g:"Behandlung",d:"Medical care given to a patient for an illness or injury",s:"The doctor said she needs _____ for her knee injury.",a:["treatment","treatments"],mc:["diagnosis","surgery","therapy"],col:[{phrase:"medical treatment",gap:"medical _____",answer:"treatment"},{phrase:"receive treatment",gap:"receive _____ for an illness",answer:"treatment"}]},
 {w:"wing",g:"Flügel",d:"One of the two flat parts on the side of a plane or a bird that help it fly",s:"One _____ of the plane was damaged during the rough landing.",a:["wing","wings"],mc:["tail","engine","propeller"]},
 {w:"become desperate",g:"verzweifeln; aussichtslos werden",d:"To reach a state of great worry because a situation seems impossible",s:"After searching for her lost dog for three days without any clue, she started to _____ and asked everyone for help.",a:["become desperate","became desperate"],mc:["become anxious","become hopeless","become furious"]},
 {w:"collide",g:"zusammenstoßen, kollidieren",d:"To crash into something with force",s:"The two cars _____ at the crossroads because neither driver stopped.",cf:"collided",a:["collide","collided"],mc:["crash","bump","smash"]},
@@ -1868,10 +1869,10 @@ const vocabData = {
 {w:"reward sb",g:"belohnen; prämieren",d:"To give something to someone because they have done something good",s:"Her parents _____ her with a new phone for getting great marks.",cf:"rewarded",a:["reward sb","reward","rewarded"],mc:["praise sb","punish sb","thank sb"]},
 {w:"critic",g:"Kritiker/in",d:"A person who gives their opinion about things like films, books, or performances",s:"A famous film _____ wrote that the movie was boring and too long.",a:["critic","critics"],mc:["reviewer","journalist","editor"]},
 {w:"elevator (AE)",g:"Aufzug",d:"A machine that carries people up and down in a building (American English for lift)",s:"We took the _____ to the tenth floor because there were too many stairs to climb.",cf:"elevator",a:["elevator","elevators"],mc:["escalator","staircase","entrance"]},
-{w:"campaign",g:"Kampagne; Aktion",d:"An organised effort to achieve a particular goal",s:"Our school started a _____ to collect money for children in need.",a:["campaigns"],mc:["protest","competition","movement"]},
+{w:"campaign",g:"Kampagne; Aktion",d:"An organised effort to achieve a particular goal",s:"Our school started a _____ to collect money for children in need.",a:["campaigns"],mc:["protest","competition","movement"],col:[{phrase:"launch a campaign",gap:"launch a _____",answer:"campaign"},{phrase:"run a campaign",gap:"run a _____ against bullying",answer:"campaign"}]},
 {w:"charge",g:"berechnen, verlangen",d:"To ask someone to pay a particular amount of money for something",s:"How much do they _____ for a ticket to the concert?",a:["charge","charges"],mc:["cost","refund","owe"]},
 {w:"crowd-funding",g:"Gruppenfinanzierung",d:"The practice of collecting small amounts of money from many people online to fund a project",s:"The band used _____ to get enough money to record their first album.",a:["crowdfunding"],mc:["sponsorship","fundraising","donation"]},
-{w:"statement",g:"Aussage",d:"An official account of facts or opinions, spoken or written",s:"The witness gave a _____ to the police about what she had seen.",a:["statements"],mc:["announcement","comment","opinion"]},
+{w:"statement",g:"Aussage",d:"An official account of facts or opinions, spoken or written",s:"The witness gave a _____ to the police about what she had seen.",a:["statements"],mc:["announcement","comment","opinion"],col:[{phrase:"make a statement",gap:"make a _____",answer:"statement"},{phrase:"official statement",gap:"an official _____",answer:"statement"}]},
 ],
 "Unit 4": [
 {w:"accountant",g:"Buchhalter/in",d:"A person whose job is to keep or check financial records",s:"She hired an _____ to help her with her company's taxes.",a:["accountants"],mc:["consultant","economist","cashier"]},
@@ -1891,19 +1892,19 @@ const vocabData = {
 {w:"male",g:"männlich",d:"Relating to men or boys",s:"In many bird species, the _____ is more colourful than the female.",a:[],mc:["masculine","mature","adult"]},
 {w:"satisfaction",g:"Genugtuung; Zufriedenheit",d:"A pleasant feeling you get when you achieve something or when something you wanted happens",s:"Finishing the marathon gave her a great feeling of _____.",a:[],mc:["achievement","pleasure","happiness"]},
 {w:"unemployed",g:"arbeitslos",d:"Not having a paid job",s:"After the factory closed, hundreds of workers became _____.",a:[],mc:["retired","underpaid","unskilled"]},
-{w:"career",g:"Karriere; Berufslaufbahn",d:"The series of jobs that a person has in a particular area of work",s:"He wants a _____ in medicine and hopes to become a surgeon one day.",a:["careers"],mc:["profession","position","occupation"]},
+{w:"career",g:"Karriere; Berufslaufbahn",d:"The series of jobs that a person has in a particular area of work",s:"He wants a _____ in medicine and hopes to become a surgeon one day.",a:["careers"],mc:["profession","position","occupation"],col:[{phrase:"pursue a career",gap:"pursue a _____",answer:"career"},{phrase:"career change",gap:"make a _____ change",answer:"career"}]},
 {w:"be keen on",g:"von etw begeistert sein",d:"To be very interested in or enthusiastic about something",s:"She's really _____ cooking and tries a new recipe every weekend.",cf:"keen on",a:["be keen on","keen on"],mc:["be fond of","be good at","be used to"]},
 {w:"be responsible for",g:"für etw verantwortlich sein",d:"To be in charge of something or to have it as your duty",s:"As class president, Tom is _____ organising school events.",cf:"responsible for",a:["be responsible for","responsible for"],mc:["be capable of","be in charge of","be involved in"]},
 {w:"bonus",g:"Bonus, Zulage; Prämie",d:"Extra money added to someone's pay as a reward for good work",s:"Everyone in the office got a Christmas _____ this year.",a:["bonuses"],mc:["reward","tip","raise"]},
-{w:"deadline",g:"Frist, Abgabetermin",d:"The latest time or date by which something must be finished",s:"The _____ for the essay is Friday, so you'd better start writing today.",a:["deadlines"],mc:["timetable","schedule","due date"]},
+{w:"deadline",g:"Frist, Abgabetermin",d:"The latest time or date by which something must be finished",s:"The _____ for the essay is Friday, so you'd better start writing today.",a:["deadlines"],mc:["timetable","schedule","due date"],col:[{phrase:"meet a deadline",gap:"meet the _____",answer:"deadline"},{phrase:"miss a deadline",gap:"miss the _____",answer:"deadline"},{phrase:"tight deadline",gap:"a _____ deadline",answer:"tight"}]},
 {w:"develop",g:"entwickeln",d:"To grow, change, or create something new over time",s:"Scientists are trying to _____ a new vaccine against the virus.",a:["develop","develops"],mc:["design","discover","improve"]},
 {w:"earn",g:"verdienen",d:"To receive money for work that you do",s:"She works at a cafe after school to _____ some extra pocket money.",a:[],mc:["gain","win","receive"]},
 {w:"launch",g:"einführen, auf den Markt bringen",d:"To start or introduce a new product, service, or project",s:"Apple plans to _____ a new smartphone next month.",a:["launch","launched"],mc:["release","publish","promote"]},
 {w:"pros and cons",g:"Vor- und Nachteile",d:"The advantages and disadvantages of something",s:"We made a list of the _____ before deciding which school to choose.",a:[],mc:["strengths and weaknesses","dos and don'ts","rights and wrongs"]},
-{w:"salary",g:"Gehalt",d:"A fixed amount of money paid to an employee every month",s:"Teachers in Austria don't always get a high _____, but they love their job.",a:["salaries"],mc:["wage","income","pension"]},
+{w:"salary",g:"Gehalt",d:"A fixed amount of money paid to an employee every month",s:"Teachers in Austria don't always get a high _____, but they love their job.",a:["salaries"],mc:["wage","income","pension"],col:[{phrase:"earn a salary",gap:"earn a good _____",answer:"salary"},{phrase:"annual salary",gap:"an _____ salary",answer:"annual"}]},
 {w:"think up",g:"ausdenken, erfinden",d:"To create or invent an idea using your imagination",s:"We need to _____ a name for our new school band.",a:[],mc:["make up","look up","come up with"]},
 {w:"working hours",g:"Arbeitszeit",d:"The times of the day during which a person is at their job",s:"The company has flexible _____, so employees can choose when to start and finish.",a:[],mc:["opening hours","office hours","overtime"]},
-{w:"advice",g:"Ratschlag",d:"Suggestions about what someone should do in a particular situation",s:"My mum gave me some good _____ about how to deal with stress.",a:[],mc:["suggestion","instruction","warning"]},
+{w:"advice",g:"Ratschlag",d:"Suggestions about what someone should do in a particular situation",s:"My mum gave me some good _____ about how to deal with stress.",a:[],mc:["suggestion","instruction","warning"],col:[{phrase:"give advice",gap:"give someone _____",answer:"advice"},{phrase:"take advice",gap:"take someone's _____",answer:"advice"},{phrase:"a piece of advice",gap:"a piece of _____",answer:"advice"}]},
 {w:"ambition",g:"Ehrgeiz",d:"A strong desire to achieve something great, like success or power",s:"Her biggest _____ is to travel around the world before she turns thirty.",a:["ambitions"],mc:["motivation","determination","aspiration"]},
 {w:"casual",g:"lässig; locker",d:"Relaxed and informal in style or manner",s:"You can wear _____ clothes to the party — jeans and a T-shirt are fine.",a:[],mc:["comfortable","elegant","formal"]},
 {w:"company",g:"Unternehmen, Firma",d:"A business organisation that makes or sells goods or services",s:"My dad works for a small _____ that makes furniture.",a:["companies"],mc:["corporation","organisation","agency"]},
@@ -1935,18 +1936,18 @@ const vocabData = {
 {w:"waste",g:"verschwenden",d:"To use more of something than is necessary or to throw it away carelessly",s:"Please don't _____ water — turn off the tap while brushing your teeth.",a:["wasting"],mc:["recycle","consume","dispose"]},
 {w:"contain",g:"enthalten",d:"To have something inside or as a part of it",s:"These sweets _____ a lot of sugar, so don't eat too many.",a:[],mc:["include","consist","involve"]},
 {w:"cookery",g:"Koch-; Kochkunst",d:"The art or activity of preparing and cooking food",s:"My sister bought a _____ book with over 200 Italian recipes.",a:[],mc:["bakery","cuisine","catering"]},
-{w:"diet",g:"Ernährung",d:"The food that a person or animal regularly eats",s:"A balanced _____ includes fruit, vegetables, protein, and grains.",a:["diets"],mc:["nutrition","menu","appetite"]},
+{w:"diet",g:"Ernährung",d:"The food that a person or animal regularly eats",s:"A balanced _____ includes fruit, vegetables, protein, and grains.",a:["diets"],mc:["nutrition","menu","appetite"],col:[{phrase:"balanced diet",gap:"a _____ diet",answer:"balanced"},{phrase:"go on a diet",gap:"go on a _____",answer:"diet"},{phrase:"healthy diet",gap:"a _____ diet",answer:"healthy"}]},
 {w:"even though",g:"obwohl",d:"Used to introduce a fact that makes the main statement surprising",s:"She went to school _____ she had a terrible headache.",a:[],mc:["as long as","in case","as if"]},
 {w:"health",g:"Gesundheit",d:"The state of being free from illness or injury",s:"Too much screen time can be bad for your _____.",a:[],mc:["fitness","wellness","strength"]},
 {w:"nutrition",g:"Ernährung",d:"The process of eating the right kind of food for health and growth",s:"We learned about _____ in biology — how vitamins, proteins, and minerals keep our bodies healthy.",a:[],mc:["digestion","diet","metabolism"]},
 {w:"overweight",g:"übergewichtig",d:"Heavier than is considered healthy for your height",s:"The doctor said he was slightly _____ and should exercise more.",a:[],mc:["obese","chubby","underweight"]},
 {w:"regularly",g:"regelmäßig",d:"At the same time or in the same way, again and again",s:"She goes swimming _____, three times a week.",a:[],mc:["frequently","constantly","occasionally"]},
 {w:"dislike",g:"nicht mögen",d:"To not like someone or something",s:"I really _____ the taste of olives — they make me feel sick.",a:[],mc:["hate","avoid","refuse"]},
-{w:"habits",g:"Gewohnheiten",d:"Things that you do often or regularly, sometimes without thinking",s:"Eating breakfast every day and going to bed on time are good _____.",a:["habit"],mc:["routines","customs","manners"]},
+{w:"habits",g:"Gewohnheiten",d:"Things that you do often or regularly, sometimes without thinking",s:"Eating breakfast every day and going to bed on time are good _____.",a:["habit"],mc:["routines","customs","manners"],col:[{phrase:"eating habits",gap:"eating _____",answer:"habits"},{phrase:"bad habits",gap:"break your bad _____",answer:"habits"}]},
 {w:"accept",g:"hinnehmen; akzeptieren",d:"To agree to take or receive something, or to recognise something as true",s:"You have to _____ that you made a mistake and try again.",a:[],mc:["admit","agree","approve"]},
 {w:"afterwards",g:"nachher",d:"At a later time; after something else has happened",s:"First we had dinner at a restaurant, and _____ we went to the cinema.",a:[],mc:["meanwhile","eventually","later"]},
 {w:"eating disorder",g:"Essstörung",d:"A serious mental health condition involving unhealthy attitudes and habits around food",s:"An _____ is a serious illness that needs professional help.",a:["eating disorders"],mc:["food allergy","food poisoning","eating habit"]},
-{w:"gain",g:"zunehmen",d:"To increase in weight, amount, or value",s:"If you eat fast food every day, you will quickly _____ weight.",a:["gained"],mc:["lose","increase","put on"]},
+{w:"gain",g:"zunehmen",d:"To increase in weight, amount, or value",s:"If you eat fast food every day, you will quickly _____ weight.",a:["gained"],mc:["lose","increase","put on"],col:[{phrase:"gain weight",gap:"_____ weight",answer:"gain"},{phrase:"gain experience",gap:"_____ experience",answer:"gain"},{phrase:"gain confidence",gap:"_____ confidence",answer:"gain"}]},
 {w:"gym",g:"Turnhalle",d:"A room or building with equipment for physical exercise",s:"We have basketball practice in the _____ every Tuesday after school.",a:["gyms"],mc:["stadium","court","pitch"]},
 {w:"thin",g:"dünn",d:"Having very little fat on the body; not thick",s:"She was so _____ that you could see her ribs through her T-shirt.",a:[],mc:["slim","skinny","lean"]},
 {w:"throw up",g:"erbrechen",d:"To bring food back up from the stomach through the mouth; to vomit",s:"He felt so sick after the roller coaster that he had to _____ into a bin.",a:[],mc:["pass out","break down","give up"]},
@@ -1957,7 +1958,7 @@ const vocabData = {
 {w:"achieve",g:"erreichen",d:"To succeed in doing something good after working hard",s:"If you study hard enough, you can _____ anything you want.",a:["achieved"],mc:["accomplish","succeed","obtain"]},
 {w:"donate",g:"spenden",d:"To give money, food, or goods to help a person or organisation",s:"Our school decided to _____ books to the children's hospital.",a:["donated"],mc:["contribute","invest","collect"]},
 {w:"drop out (of school)",g:"(die Schule) abbrechen",d:"To quit your studies before finishing your education",s:"She wanted to _____ at 15, but her parents convinced her to stay.",cf:"drop out",a:["drop out","dropped out","drop out of school","dropped out of school"],mc:["fail (at school)","skip (school)","graduate (from school)"]},
-{w:"goal",g:"Ziel",d:"Something that you are trying to achieve",s:"My biggest _____ this year is to pass all my exams.",a:["goals"],mc:["aim","dream","purpose"]},
+{w:"goal",g:"Ziel",d:"Something that you are trying to achieve",s:"My biggest _____ this year is to pass all my exams.",a:["goals"],mc:["aim","dream","purpose"],col:[{phrase:"set a goal",gap:"set a _____",answer:"goal"},{phrase:"achieve a goal",gap:"achieve a _____",answer:"goal"}]},
 {w:"income",g:"Einkommen",d:"The money that a person earns from work or receives regularly",s:"Many families find it hard to live on a low _____.",a:[],mc:["salary","profit","budget"]},
 {w:"inspire",g:"inspirieren",d:"To give someone the desire or confidence to do something great",s:"My art teacher really _____ me to start painting every day.",cf:"inspired",a:["inspire","inspired"],mc:["motivate","encourage","influence"]},
 {w:"support",g:"unterstützen",d:"To help someone by giving them encouragement, money, or practical assistance",s:"My parents always _____ me when I have problems at school.",a:[],mc:["assist","encourage","sponsor"]},
@@ -1988,7 +1989,7 @@ const vocabData = {
 {w:"headlight",g:"Scheinwerfer",d:"A large light on the front of a vehicle used for seeing in the dark",s:"One of the car's _____ was broken, so it was hard to see the road at night.",cf:"headlights",a:["headlight","headlights"],mc:["indicator","brake light","spotlight"]},
 {w:"heritage",g:"Erbe, Tradition",d:"The traditions, buildings, and culture that a country or society has developed over many years",s:"Vienna's musical _____ attracts millions of tourists every year.",a:[],mc:["tradition","culture","legacy"]},
 {w:"jump-start",g:"Starthilfe geben",d:"To start a car by connecting its battery to another car's battery",s:"Our car wouldn't start this morning, so a neighbour helped us _____ it.",a:["jumpstart"],mc:["recharge","restart","refuel"]},
-{w:"pressure",g:"Druck",d:"A feeling of stress caused by the need to do something quickly or perfectly",s:"Students often feel a lot of _____ before important exams.",a:[],mc:["stress","tension","anxiety"]},
+{w:"pressure",g:"Druck",d:"A feeling of stress caused by the need to do something quickly or perfectly",s:"Students often feel a lot of _____ before important exams.",a:[],mc:["stress","tension","anxiety"],col:[{phrase:"put pressure on",gap:"put _____ on someone",answer:"pressure"},{phrase:"under pressure",gap:"work under _____",answer:"pressure"},{phrase:"peer pressure",gap:"peer _____",answer:"pressure"}]},
 {w:"shade",g:"Schatten",d:"An area where sunlight is blocked by something, making it cooler",s:"It was 35 degrees outside, so we stayed in the _____ under a big tree.",a:[],mc:["shadow","shelter","sunlight"]},
 {w:"string",g:"Schnur; Bindfaden",d:"A thin piece of twisted thread used to tie things together",s:"She tied the parcel with a piece of _____.",a:[],mc:["thread","rope","wire"]},
 {w:"reed",g:"Schilfrohr",d:"A tall plant with thin leaves that grows near water",s:"Tall _____ grew along the edges of the river.",cf:"reeds",a:["reed","reeds"],mc:["bamboo","moss","fern"]},
@@ -2120,7 +2121,7 @@ const vocabData = {
 {w:"fairness",g:"Gerechtigkeit; Fairness",d:"The quality of treating people equally and in a reasonable way",s:"The referee must always show _____ and treat both teams the same.",a:[],mc:["justice","equality","honesty"]},
 {w:"hell",g:"Hölle",d:"In some religions, a place of punishment after death; also used to mean a terrible situation",s:"In many religions, people believe that bad souls are sent to _____.",a:[],mc:["heaven","purgatory","doom"]},
 {w:"introduction",g:"Einleitung",d:"The first part of a book, speech, or presentation that explains what it is about",s:"The _____ of her essay explains what the topic is about.",a:["introductions"],mc:["conclusion","summary","preface"]},
-{w:"pollution",g:"Verschmutzung",d:"Damage caused to the environment by harmful substances or waste",s:"Air _____ from cars and factories is a serious problem in many cities.",a:[],mc:["contamination","emission","radiation"]},
+{w:"pollution",g:"Verschmutzung",d:"Damage caused to the environment by harmful substances or waste",s:"Air _____ from cars and factories is a serious problem in many cities.",a:[],mc:["contamination","emission","radiation"],col:[{phrase:"air pollution",gap:"air _____",answer:"pollution"},{phrase:"cause pollution",gap:"cause _____",answer:"pollution"},{phrase:"reduce pollution",gap:"reduce _____",answer:"pollution"}]},
 ],
 "Unit 11": [
 {w:"screenplay",g:"Drehbuch",d:"The written text of a film, including dialogue and instructions for the actors",s:"She wrote the _____ for a short film that won an award at the school festival.",a:["screenplays"],mc:["script","manuscript","dialogue"]},
@@ -2315,6 +2316,7 @@ let state = {
   battleRound: 0, battleAnswered: false,
   _roomListener: null, _inviteListener: null, _inviteChangeListener: null, _battleRoundTimer: null,
   cqRoom: null, cqRole: null, cqData: null, cqAnswered: false, cqTimerInterval: null, cqListener: null, cqCurrentQ: -1, cqServerOffset: 0,
+  colEntry: null,
 };
 
 // ===== GAMIFICATION =====
@@ -3989,6 +3991,10 @@ function openPracticeSetup() {
             <span class="type-card-name">&#127757; Translation</span>
             <span class="type-card-desc">See the German word, type the English</span>
           </button>
+          <button class="type-card" data-type="collocation" onclick="selectType(this)">
+            <span class="type-card-name">🤝 Word Partners</span>
+            <span class="type-card-desc">Fill in the missing word in a collocation</span>
+          </button>
         </div>
       </div>
     </div>
@@ -4505,6 +4511,38 @@ function getMCAnswer(word, type) {
   return word.w.replace(/^to\s+/, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim().replace(/\s+/g, ' ');
 }
 
+const COLLOCATION_DISTRACTORS = ['make','do','take','have','get','give','keep','put','pay','set','break','catch','hold','run','come','find','reach','cause','earn','save','miss','meet','gain','suffer','launch','strong','serious','heavy','large','close','good','big','clean','difficult','tight','balanced','healthy','bad','annual','official','medical'];
+
+function renderCollocationMC(word, colEntry) {
+  const grid = document.getElementById('mc-grid');
+  const answerRow = document.getElementById('answer-row');
+  const actions = document.getElementById('quiz-actions');
+  grid.style.display = 'grid';
+  answerRow.style.display = 'none';
+  actions.style.display = 'none';
+  grid.innerHTML = '';
+
+  const correctAnswer = colEntry.answer;
+  // Pick 3 distractors from the pool, excluding the correct answer
+  const pool = COLLOCATION_DISTRACTORS.filter(d => d.toLowerCase() !== correctAnswer.toLowerCase());
+  shuffle(pool);
+  const distractors = pool.slice(0, 3);
+
+  const options = [
+    { text: correctAnswer, correct: true },
+    ...distractors.map(d => ({ text: d, correct: false }))
+  ];
+  shuffle(options);
+
+  for (const opt of options) {
+    const btn = document.createElement('button');
+    btn.className = 'mc-option';
+    btn.textContent = opt.text;
+    btn.onclick = () => handleMCClick(btn, opt.correct, word, 'mc-collocation', grid);
+    grid.appendChild(btn);
+  }
+}
+
 function renderMultipleChoice(word, type) {
   const grid = document.getElementById('mc-grid');
   const answerRow = document.getElementById('answer-row');
@@ -4592,10 +4630,10 @@ function getTaskType() {
     return easyTypes[Math.floor(Math.random() * easyTypes.length)];
   }
   const sel = state.exerciseType;
-  const pool = Array.isArray(sel) ? sel : sel === 'mix' ? ['context', 'context-hard', 'definition', 'definition-hard', 'translation'] : [sel];
+  const pool = Array.isArray(sel) ? sel : sel === 'mix' ? ['context', 'context-hard', 'definition', 'definition-hard', 'translation', 'collocation'] : [sel];
   const expanded = [];
   for (const t of pool) {
-    if (t === 'multiple-choice') expanded.push('mc-context', 'mc-definition', 'mc-translation');
+    if (t === 'multiple-choice') expanded.push('mc-context', 'mc-definition', 'mc-translation', 'mc-collocation');
     else expanded.push(t);
   }
   return expanded[Math.floor(Math.random() * expanded.length)];
@@ -4652,9 +4690,14 @@ function showWord() {
     endPractice(); return;
   }
   const word = state.words[state.currentIdx];
-  const type = getTaskType();
+  let type = getTaskType();
+  if ((type === 'collocation' || type === 'mc-collocation') && (!word.col || word.col.length === 0)) {
+    const fallbacks = ['context', 'definition', 'translation'];
+    type = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  }
   state.currentType = type;
   state.answered = false;
+  state.colEntry = (type === 'collocation' || type === 'mc-collocation') && word.col ? word.col[Math.floor(Math.random() * word.col.length)] : null;
 
   const isMC = type.startsWith('mc-');
   const pct = state.isSpeedRound ? 0 : (state.currentIdx / state.words.length) * 100;
@@ -4672,8 +4715,9 @@ function showWord() {
   const baseType = isMC ? type.replace('mc-', '') : type;
   const isContext = baseType === 'context' || baseType === 'context-hard';
   const isDef = baseType === 'definition' || baseType === 'definition-hard';
-  label.className = 'task-type-label ' + (isContext ? 'context' : isDef ? 'definition' : baseType);
-  label.textContent = isMC ? 'Choose the answer' : isContext ? 'Complete the sentence' : isDef ? 'Guess the word' : 'Translate to English';
+  const isCol = baseType === 'collocation';
+  label.className = 'task-type-label ' + (isContext ? 'context' : isDef ? 'definition' : isCol ? 'collocation' : baseType);
+  label.textContent = isCol ? 'Word Partners' : isMC ? 'Choose the answer' : isContext ? 'Complete the sentence' : isDef ? 'Guess the word' : 'Translate to English';
 
   const prompt = document.getElementById('quiz-prompt');
   if (isContext) {
@@ -4711,13 +4755,17 @@ function showWord() {
       // Hard mode: just the definition, no hints
       prompt.innerHTML = `<em>${word.d}</em>`;
     }
+  } else if (isCol && state.colEntry) {
+    prompt.innerHTML = state.colEntry.gap.replace('_____', '<span class="gap">_____</span>');
   } else {
     prompt.innerHTML = `<span class="german-word">${word.g}</span>`;
   }
 
   document.getElementById('source-tag').textContent = word.source;
 
-  if (isMC) {
+  if (isMC && isCol && state.colEntry) {
+    renderCollocationMC(word, state.colEntry);
+  } else if (isMC) {
     renderMultipleChoice(word, type);
   } else {
     const input = document.getElementById('answer-input');
@@ -4749,7 +4797,8 @@ function checkAnswer() {
   if (!userAnswer) return;
 
   const word = state.words[state.currentIdx];
-  const correct = isCorrect(userAnswer, word);
+  const isColType = state.currentType === 'collocation';
+  const correct = isColType && state.colEntry ? userAnswer.toLowerCase().trim() === state.colEntry.answer.toLowerCase().trim() : isCorrect(userAnswer, word);
   state.answered = true;
 
   const feedback = document.getElementById('feedback');
@@ -4777,8 +4826,10 @@ function checkAnswer() {
     const qcW = document.getElementById('quiz-card'); if (qcW) { qcW.classList.remove('flash-correct','flash-wrong'); void qcW.offsetWidth; qcW.classList.add('flash-wrong'); }
     const isCtx = state.currentType === 'context' || state.currentType === 'context-hard';
     const isDef = state.currentType === 'definition' || state.currentType === 'definition-hard';
+    const isColW = state.currentType === 'collocation';
     let displayAnswer;
-    if (isCtx) { displayAnswer = getContextForm(word); }
+    if (isColW && state.colEntry) { displayAnswer = state.colEntry.answer + ' <span style="font-weight:400;color:var(--muted);font-size:0.85em;">(' + state.colEntry.phrase + ')</span>'; }
+    else if (isCtx) { displayAnswer = getContextForm(word); }
     else if (isDef) {
       displayAnswer = word.w.replace(/^to\s+/, '').replace(/\(.*?\)/g, '').replace(/\bsth\.?\s*/g, '').replace(/\bsb\.?\s*/g, '').replace(/[.!?]+$/g, '').trim().replace(/\s+/g, ' ');
       if (displayAnswer !== word.w) displayAnswer += ' <span style="font-weight:400;color:var(--muted);font-size:0.85em;">(' + word.w + ')</span>';
