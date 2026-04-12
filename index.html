@@ -1689,7 +1689,6 @@ body.playing .header-container { display: none; }
     </div>
     <div class="profile-logout-row">
       <button class="logout-btn" onclick="logout()">Log Out</button>
-      <button id="profile-mode-switch" onclick="showModeSelectScreen()" style="margin-left:auto;padding:6px 16px;border-radius:var(--radius);font-size:0.82rem;font-weight:700;cursor:pointer;border:1.5px solid var(--accent);background:var(--accent-glow);color:var(--accent);font-family:inherit;transition:all 0.15s;">🔄 Switch Mode</button>
     </div>
   </div>
   <span id="rank-mode-label" style="display:none;"></span>
@@ -1711,7 +1710,7 @@ body.playing .header-container { display: none; }
       <span id="smart-review-hint-text">Words to review</span>
       <span style="font-size:0.65rem;color:var(--muted);margin-left:auto;">Start →</span>
     </div>
-    <button class="home-mode-switch-btn" id="home-mode-switch" onclick="showModeSelectScreen()" style="display:none;">↩️ Switch to Grammar or Story Mode</button>
+    <button class="home-mode-switch-btn" id="home-mode-switch" onclick="showModeSelectScreen()">↩️ Switch to Grammar or Story Mode</button>
   </div>
   <div class="home-section">
     <button class="home-fullwidth-card" id="home-words-btn" onclick="showWordReference()">
@@ -8230,8 +8229,8 @@ showHomeScreen = function() {
         srHint.onclick = function() { startSmartReview(); };
       } else { srHint.style.display = 'none'; }
     }
-    var modeLink = document.getElementById('profile-mode-switch');
-    if (modeLink) modeLink.textContent = '🔄 Switch Mode';
+    var modeLink = document.getElementById('home-mode-switch');
+    if (modeLink) modeLink.textContent = '↩️ Switch to Grammar or Story Mode';
     var todayCard = document.getElementById('today-card');
     if (todayCard) {
       todayCard.style.display = 'none';
@@ -8394,8 +8393,8 @@ function showGrammarHomeScreen() {
   if (wSub) wSub.textContent = 'Browse all grammar rules';
   var wordsBtn = document.getElementById('home-words-btn');
   if (wordsBtn) wordsBtn.onclick = function() { showGrammarReference(); };
-  var modeLink = document.getElementById('profile-mode-switch');
-  if (modeLink) modeLink.textContent = '🔄 Switch Mode';
+  var modeLink = document.getElementById('home-mode-switch');
+  if (modeLink) modeLink.textContent = '↩️ Switch to Grammar or Story Mode';
   var totalXp = (d.xp || 0) + (d.grammarXp || 0);
   var ol = getOverallLevel(totalXp);
   var olBadge = document.getElementById('overall-badge');
