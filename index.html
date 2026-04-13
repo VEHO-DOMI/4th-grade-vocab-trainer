@@ -3633,7 +3633,6 @@ async function saveSessionResults() {
 
     await studentsRef.doc(state.studentId).update(updateObj);
     state.studentData.xp = (state.studentData.xp || 0) + earnedXP + bonusXP;
-    addWeeklyGoalXP(earnedXP);
     state.studentData.streak = streakUpdate.streak;
     state.studentData.lastSessionDate = streakUpdate.lastSessionDate;
     state.studentData.exerciseTypesUsed = allUsed;
