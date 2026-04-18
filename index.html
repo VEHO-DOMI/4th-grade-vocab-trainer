@@ -2818,15 +2818,12 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"crime-basic words", de:"Verbrechens-Grundwörter"},
-        correct:["illegal","suspect","criminal","victim","witness","weapon","murder","evidence"],
-        distractors:["consider","mention","prove","realise"] },
-      { t:{en:"detective-work words", de:"Ermittlungs-Wörter"},
-        correct:["investigation","crime scene","suspicion","prove","conclusion","mystery","report","commit"],
-        distractors:["handkerchief","wastepaper bin","excellent","historical"] },
-      { t:{en:"thinking & noticing verbs", de:"Denk- und Wahrnehmungs-Verben"},
-        correct:["consider","mention","expect","realise","keep an eye on","get hold of sth","take over"],
-        distractors:["investigation","mystery","murder","criminal","blackmail"] }
+      { t:{en:"crime & investigation", de:"Verbrechen & Ermittlung"},
+        correct:["mystery","report","suspicion","conclusion","prove","commit","escape","investigation","crime scene"],
+        distractors:["thieves","murderer","witness"] },
+      { t:{en:"thinking & noticing verbs", de:"Denk- & Wahrnehmungs-Verben"},
+        correct:["consider","mention","expect","realise","get hold of sth","keep an eye on"],
+        distractors:["escape","unlock","retire"] }
     ],
     sb: ["suspect","criminal","witness","evidence","investigation","crime scene","suspicion","mystery","blackmail","handkerchief","wastepaper bin","excellent","conclusion","historical","realise"]
   },
@@ -2863,15 +2860,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"aviation & landing words", de:"Flug- & Landungs-Wörter"},
-        correct:["emergency landing","runway","takeoff","evacuate","rescue boat","wing","glide down","flock of birds"],
-        distractors:["miracle","bravery","announcement","immigrant"] },
-      { t:{en:"crisis & danger words", de:"Krisen- & Gefahren-Wörter"},
-        correct:["be in trouble","blow up","collide","explode","become desperate","miracle","bravery"],
-        distractors:["cuisine","immigrant","native","politics","origin"] },
-      { t:{en:"city & people words", de:"Stadt- & Menschen-Wörter"},
+      { t:{en:"the Hudson River emergency", de:"Notlandung im Hudson River"},
+        correct:["emergency landing","evacuate","glide down","rescue boat","runway","takeoff","wing","flock of birds","collide"],
+        distractors:["pilot","passenger","crash"] },
+      { t:{en:"New York life & culture", de:"Leben & Kultur in New York"},
         correct:["busy","cuisine","immigrant","native","nearby","origin","politics"],
-        distractors:["explode","evacuate","runway","miracle","flock of birds"] }
+        distractors:["rescue boat","runway"] },
+      { t:{en:"bravery in a crisis", de:"Mut in der Krise"},
+        correct:["bravery","miracle","become desperate","be in trouble","reward sb"],
+        distractors:["hero","panic","runway","politics"] }
     ],
     sb: ["emergency landing","evacuate","miracle","bravery","immigrant","cuisine","runway","takeoff","announcement","flock of birds","collide","become desperate","rescue boat","crowd-funding","campaign"]
   },
