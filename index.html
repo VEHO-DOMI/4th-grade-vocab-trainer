@@ -2775,18 +2775,14 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"Irish potato famine", de:"Irische Hungersnot"},
-        sub:{en:"Pick words that describe the 1845 famine — hunger, farming, and the people affected.", de:"Wähle Wörter, die die Hungersnot von 1845 beschreiben — Hunger, Landwirtschaft und die betroffenen Menschen."},
+      { t:{en:"Irish potato famine (1845)", de:"Irische Hungersnot (1845)"},
+        sub:{en:"Pick words about this specific famine — its cause (a fungus), what failed on the land, and who held power over it.", de:"Wähle Wörter zu genau dieser Hungersnot — ihre Ursache (ein Pilz), was auf dem Land versagte und wer die Macht darüber hatte."},
         correct:["famine","starve","crop","grain","fungus","cattle","landlord"],
-        distractors:["harvest","drought","plague","soldier","emigrate"] },
+        distractors:["drought","flood","factory","rebellion","abundance"] },
       { t:{en:"Irish Free State & politics", de:"Irischer Freistaat & Politik"},
-        sub:{en:"Pick words about power, governments, and how a country is founded or ruled.", de:"Wähle Wörter über Macht, Regierungen und wie ein Land gegründet oder regiert wird."},
-        correct:["government","majority","free state","found","put down","interfere","tax","member","independent"],
-        distractors:["citizen","battle","farmer"] },
-      { t:{en:"reactions & feelings", de:"Reaktionen & Gefühle"},
-        sub:{en:"Pick words about how someone feels or reacts inside.", de:"Wähle Wörter darüber, wie jemand sich fühlt oder innerlich reagiert."},
-        correct:["admire","be terrified","cheer","nonsense","be aware of sth","unconscious"],
-        distractors:["sleepy","cheerful","curious"] }
+        sub:{en:"Pick words about political structures, actions, and states — not about people or their roles.", de:"Wähle Wörter über politische Strukturen, Handlungen und Zustände — nicht über Personen oder ihre Rollen."},
+        correct:["government","majority","free state","found","put down","interfere","tax","independent"],
+        distractors:["citizen","soldier","farmer","priest"] }
     ],
     sb: ["famine","starve","fungus","landlord","government","majority","independent","foreigner","Catholic","unconscious","interfere","be terrified","primary school","shake hands","incident"]
   },
@@ -2825,13 +2821,13 @@ const VOCAB_TASKS = {
     ],
     wh: [
       { t:{en:"crime & investigation", de:"Verbrechen & Ermittlung"},
-        sub:{en:"Pick words about crimes, clues, or how detectives solve a mystery.", de:"Wähle Wörter über Verbrechen, Hinweise oder wie Detektive ein Rätsel lösen."},
+        sub:{en:"Pick words about crimes and how detectives investigate — not about courtroom or punishment.", de:"Wähle Wörter über Verbrechen und wie Detektive ermitteln — nichts über Gerichtssaal oder Bestrafung."},
         correct:["mystery","report","suspicion","conclusion","prove","commit","escape","investigation","crime scene"],
-        distractors:["suspect","witness","detective"] },
-      { t:{en:"thinking & noticing verbs", de:"Denk- & Wahrnehmungs-Verben"},
-        sub:{en:"Pick verbs about thinking, noticing, or paying attention — not doing something physical.", de:"Wähle Verben über Denken, Bemerken oder Aufpassen — nichts Körperliches."},
+        distractors:["trial","jail","sentence"] },
+      { t:{en:"thinking, noticing & saying verbs", de:"Denk-, Wahrnehmungs- & Sprech-Verben"},
+        sub:{en:"Pick verbs about mental activity, watching, or saying things — not about physical body actions.", de:"Wähle Verben über geistige Aktivität, Beobachten oder Sprechen — nichts Körperliches."},
         correct:["consider","mention","expect","realise","get hold of sth","keep an eye on"],
-        distractors:["ignore","forget","shout"] }
+        distractors:["run","jump","eat"] }
     ],
     sb: ["suspect","criminal","witness","evidence","investigation","crime scene","suspicion","mystery","blackmail","handkerchief","wastepaper bin","excellent","conclusion","historical","realise"]
   },
@@ -2869,17 +2865,17 @@ const VOCAB_TASKS = {
     ],
     wh: [
       { t:{en:"the Hudson River emergency", de:"Notlandung im Hudson River"},
-        sub:{en:"Pick words that describe the emergency plane landing on the Hudson River.", de:"Wähle Wörter, die die Notlandung des Flugzeugs auf dem Hudson River beschreiben."},
+        sub:{en:"Pick words about this specific emergency — the birds, the plane, and the evacuation — not other flight problems.", de:"Wähle Wörter über genau diesen Notfall — die Vögel, das Flugzeug und die Evakuierung — keine anderen Flugprobleme."},
         correct:["emergency landing","evacuate","glide down","rescue boat","runway","takeoff","wing","flock of birds","collide"],
-        distractors:["captain","splash","turbulence"] },
+        distractors:["hijack","delay","boarding"] },
       { t:{en:"New York life & culture", de:"Leben & Kultur in New York"},
-        sub:{en:"Pick words that describe the people, culture, or daily life of New York.", de:"Wähle Wörter, die die Menschen, Kultur oder den Alltag in New York beschreiben."},
+        sub:{en:"Pick words about city life and people — not about rural or small-town life.", de:"Wähle Wörter über Großstadtleben und Menschen — nichts über ländliches oder dörfliches Leben."},
         correct:["busy","cuisine","immigrant","native","nearby","origin","politics"],
-        distractors:["crowded","foreign"] },
+        distractors:["countryside","farmhouse"] },
       { t:{en:"bravery in a crisis", de:"Mut in der Krise"},
-        sub:{en:"Pick words about being brave, feeling desperate, or surviving a disaster.", de:"Wähle Wörter über Mut, Verzweiflung oder das Überleben einer Katastrophe."},
+        sub:{en:"Pick words about facing a disaster or hardship — not about calm or normal times.", de:"Wähle Wörter über Katastrophen und schwierige Zeiten — nichts über Ruhe oder Alltag."},
         correct:["bravery","miracle","become desperate","be in trouble","reward sb"],
-        distractors:["courage","luck","panic","hero"] }
+        distractors:["peace","boredom","comfort","routine"] }
     ],
     sb: ["emergency landing","evacuate","miracle","bravery","immigrant","cuisine","runway","takeoff","announcement","flock of birds","collide","become desperate","rescue boat","crowd-funding","campaign"]
   },
