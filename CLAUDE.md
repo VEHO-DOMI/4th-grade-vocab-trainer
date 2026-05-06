@@ -15,6 +15,10 @@ Single-file SPA. G4 has the most heavily curated Word Hunt content (semantic-cla
 4th-grade-vocab-trainer/
 ├── index.html         ← entire app (HTML + inline CSS + inline JS + vocabData)
 ├── avatars/           ← 50 PNG avatars
+├── activity/          ← Activity Game sibling app (Draw / Show / Explain)
+│   ├── index.html     ← standalone group game; no login, no Firebase, no XP
+│   └── data/
+│       └── activity-words.js  ← auto-generated; rebuild via TOOLS/activity-audit-g4/
 └── README.md, CLAUDE.md, CHANGELOG.md
 ```
 
@@ -33,6 +37,8 @@ No `campaign/` folder yet — campaign assets haven't been added because the Sto
 **Grammar arcade:** chat-sim campaign renderer, group-sort / matching-pairs / anagram task types.
 
 **Live multiplayer:** Battle Arena, Class Quiz.
+
+**Activity Game (sibling app at `activity/`):** teacher-orchestrated group game — Draw / Show / Explain (multi-select), 30/60/90 s rounds, 3/5/8/∞ rounds-per-group, multi-select 13-unit picker, group scoring with tie-break, optional time bonus. No login. Words come from `activity/data/activity-words.js` (single primary category per word, 443 entries categorized through an A2+ lens). Regenerate via `TOOLS/activity-audit-g4/build-activity-words.js` after editing `teacher-overrides.csv`.
 
 **Disabled (scaffolded):** Story Mode (campaign-comic-screen, campaign-level-info-screen).
 
