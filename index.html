@@ -1562,14 +1562,12 @@ body.playing .header-container { display: none; }
 .wh-prompt-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--muted); font-weight:700; margin-bottom:0.3rem; }
 .wh-prompt-text { font-size:1.05rem; font-weight:700; color:var(--text); line-height:1.3; }
 .wh-prompt-target { color:var(--accent); font-size:1.18rem; }
-.wh-prompt-sub { font-size:0.78rem; font-weight:500; color:var(--muted); line-height:1.35; margin-top:0.45rem; }
-.wh-prompt-sub:empty { display:none; }
 .wh-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; margin-bottom:0.8rem; }
-.wh-tile { min-height: 64px; background:var(--card); border:2px solid var(--card-border); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; padding:0.55rem 0.4rem; font-weight:600; font-size:0.78rem; line-height:1.25; color:var(--text); cursor:pointer; transition:all 0.2s; user-select:none; hyphens:auto; }
+.wh-tile { aspect-ratio: 4/3; background:var(--card); border:2px solid var(--card-border); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; padding:0.4rem; font-weight:600; font-size:0.82rem; line-height:1.2; color:var(--text); cursor:pointer; transition:all 0.2s; user-select:none; word-break:break-word; }
 .wh-tile:hover, .wh-tile:active { border-color:var(--accent); transform:scale(1.03); }
 .wh-tile.correct { background: var(--correct-glow, #d4f5db); border-color: var(--correct, #16a34a); color: var(--correct, #16a34a); animation: mmMatch 0.4s ease; pointer-events:none; }
 .wh-tile.wrong { background: var(--wrong-glow, #fce4e4); border-color: var(--wrong, #dc2626); color: var(--wrong, #dc2626); animation: mmShake 0.35s ease; pointer-events:none; }
-.wh-tile.missed { border-color: var(--correct, #16a34a); background: var(--correct-glow, #d4f5db); color: var(--correct, #16a34a); opacity:0.7; }
+.wh-tile.missed { border-color: var(--wrong, #dc2626); background: var(--wrong-glow, #fce4e4); opacity:0.7; }
 .wh-feedback { text-align:center; padding:0.7rem; border-radius:10px; font-weight:600; font-size:0.9rem; margin-bottom:0.6rem; display:none; }
 .wh-feedback.show { display:block; animation: sbFbIn 0.3s ease; }
 .wh-feedback.correct { background:var(--correct-glow, #d4f5db); color:var(--correct, #16a34a); }
@@ -1584,7 +1582,7 @@ body.playing .header-container { display: none; }
   <h1 class="header-title" style="display:inline-block;">DomiGo</h1>
   <p class="header-tagline">English · Vocabulary & Grammar</p>
   <p class="header-grade">4th Grade</p>
-  <p class="header-school">Orhan Vehabovic</p>
+  <p class="header-school">VEHO – Gymnasium und wirtschaftskundliches<br>Realgymnasium der Dominikanerinnen</p>
 </div>
 
 <!-- CLASS SELECTION SCREEN -->
@@ -1837,7 +1835,7 @@ body.playing .header-container { display: none; }
   <div class="home-section">
     <button class="btn btn-primary btn-start-practice" onclick="openPracticeSetup()">
       <span id="practice-btn-label">🎯 Start Practice</span>
-      <span class="practice-btn-sub" id="practice-subtitle">Choose units and exercise type</span>
+      <span class="practice-btn-sub" id="practice-subtitle">Choose units and exercise types</span>
     </button>
     <div id="smart-review-hint" class="home-smart-review-hint" style="display:none;" onclick="startSmartReview()">
       <span>📝</span>
@@ -1852,17 +1850,6 @@ body.playing .header-container { display: none; }
       <div class="home-fullwidth-info">
         <span class="home-fullwidth-title" id="home-words-title">Dictionary & Flashcards</span>
         <span class="home-fullwidth-subtitle" id="home-words-subtitle">Look up words and study with flashcards</span>
-      </div>
-      <span class="home-fullwidth-arrow">→</span>
-    </button>
-  </div>
-  <!-- Activity Game — full width card (sibling app at /activity/) -->
-  <div class="home-section">
-    <button class="home-fullwidth-card" id="home-activity-btn" onclick="window.location.href='activity/'">
-      <span class="home-fullwidth-icon">🎯</span>
-      <div class="home-fullwidth-info">
-        <span class="home-fullwidth-title" id="home-activity-title">Activity Game</span>
-        <span class="home-fullwidth-subtitle" id="home-activity-subtitle">Draw, show, explain — group game</span>
       </div>
       <span class="home-fullwidth-arrow">→</span>
     </button>
@@ -2053,7 +2040,7 @@ body.playing .header-container { display: none; }
 
 <!-- PRACTICE SCREEN -->
 <div id="practice-screen" class="screen">
-  <div class="speed-timer-wrap" id="speed-timer-wrap" style="display:none;">
+  <div class="speed-timer-wrap" id="speed-timer-wrap">
     <div class="speed-timer-text" id="speed-timer-text">60</div>
     <div class="speed-timer-bg"><div class="speed-timer-bar" id="speed-timer-bar" style="width:100%"></div></div>
   </div>
@@ -2237,7 +2224,6 @@ body.playing .header-container { display: none; }
     <div class="wh-prompt-card">
       <div class="wh-prompt-label">Tap all that match</div>
       <div class="wh-prompt-text" id="wh-prompt-text"></div>
-      <div class="wh-prompt-sub" id="wh-prompt-sub"></div>
     </div>
     <div id="wh-feedback" class="wh-feedback"></div>
     <div id="wh-grid" class="wh-grid"></div>
@@ -2786,14 +2772,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"Irish potato famine (1845)", de:"Irische Hungersnot (1845)"},
-        sub:{en:"Pick words about this specific famine — its cause (a fungus), what failed on the land, and who held power over it.", de:"Wähle Wörter zu genau dieser Hungersnot — ihre Ursache (ein Pilz), was auf dem Land versagte und wer die Macht darüber hatte."},
-        correct:["famine","starve","crop","grain","fungus","cattle","landlord"],
-        distractors:["factory","rebellion","abundance","parade","school"] },
-      { t:{en:"Irish Free State & politics", de:"Irischer Freistaat & Politik"},
-        sub:{en:"Pick words about political structures, actions, and states — not about people or their roles.", de:"Wähle Wörter über politische Strukturen, Handlungen und Zustände — nicht über Personen oder ihre Rollen."},
-        correct:["government","majority","free state","found","put down","interfere","tax","independent"],
-        distractors:["citizen","soldier","farmer","priest"] }
+      { t:{en:"Find famine words", de:"Finde Hunger-Wörter"},
+        correct:["famine","starve","crop","grain","fungus","cattle"],
+        distractors:["government","tax","landlord"] },
+      { t:{en:"Find political power words", de:"Finde Macht-Wörter"},
+        correct:["government","majority","free state","landlord","tax"],
+        distractors:["cheer","thunder","hiking"] },
+      { t:{en:"Find feelings & reactions", de:"Finde Gefühle & Reaktionen"},
+        correct:["admire","be terrified","cheer","be aware of sth"],
+        distractors:["nonsense","proper","thunder","hiking"] }
     ],
     sb: ["famine","starve","fungus","landlord","government","majority","independent","foreigner","Catholic","unconscious","interfere","be terrified","primary school","shake hands","incident"]
   },
@@ -2831,14 +2818,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"crime & investigation", de:"Verbrechen & Ermittlung"},
-        sub:{en:"Pick words about crimes and how detectives investigate them.", de:"Wähle Wörter über Verbrechen und wie Detektive ermitteln."},
-        correct:["mystery","report","suspicion","conclusion","prove","commit","escape","investigation","crime scene"],
-        distractors:["wedding","picnic","concert"] },
-      { t:{en:"thinking, noticing & saying verbs", de:"Denk-, Wahrnehmungs- & Sprech-Verben"},
-        sub:{en:"Pick verbs about mental activity, watching, or saying things — not about physical body actions.", de:"Wähle Verben über geistige Aktivität, Beobachten oder Sprechen — nichts Körperliches."},
-        correct:["consider","mention","expect","realise","get hold of sth","keep an eye on"],
-        distractors:["run","jump","eat"] }
+      { t:{en:"Find crime words", de:"Finde Verbrechens-Wörter"},
+        correct:["illegal","suspect","criminal","victim","witness","weapon","murder","evidence"],
+        distractors:["handkerchief"] },
+      { t:{en:"Find investigation words", de:"Finde Ermittlungs-Wörter"},
+        correct:["investigation","crime scene","suspicion","prove","conclusion","mystery","commit"],
+        distractors:["wastepaper bin","handkerchief"] },
+      { t:{en:"Find people nouns", de:"Finde Personen-Nomen"},
+        correct:["suspect","criminal","victim","witness","nephew","employee","office clerk","relative"],
+        distractors:["weapon"] }
     ],
     sb: ["suspect","criminal","witness","evidence","investigation","crime scene","suspicion","mystery","blackmail","handkerchief","wastepaper bin","excellent","conclusion","historical","realise"]
   },
@@ -2875,18 +2863,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"the Hudson River emergency", de:"Notlandung im Hudson River"},
-        sub:{en:"Pick words about this specific emergency — the birds, the plane, and the evacuation.", de:"Wähle Wörter über genau diesen Notfall — die Vögel, das Flugzeug und die Evakuierung."},
-        correct:["emergency landing","evacuate","glide down","rescue boat","runway","takeoff","wing","flock of birds","collide"],
-        distractors:["marathon","festival","birthday"] },
-      { t:{en:"New York life & culture", de:"Leben & Kultur in New York"},
-        sub:{en:"Pick words about city life and people — not about rural or small-town life.", de:"Wähle Wörter über Großstadtleben und Menschen — nichts über ländliches oder dörfliches Leben."},
-        correct:["busy","cuisine","immigrant","native","nearby","origin","politics"],
-        distractors:["countryside","farmhouse"] },
-      { t:{en:"bravery in a crisis", de:"Mut in der Krise"},
-        sub:{en:"Pick words about facing a disaster or hardship — not about calm or normal times.", de:"Wähle Wörter über Katastrophen und schwierige Zeiten — nichts über Ruhe oder Alltag."},
-        correct:["bravery","miracle","become desperate","be in trouble","reward sb"],
-        distractors:["peace","boredom","comfort","routine"] }
+      { t:{en:"Find aviation words", de:"Finde Flug-Wörter"},
+        correct:["emergency landing","runway","takeoff","evacuate","wing","glide down","flock of birds"],
+        distractors:["elevator (AE)","campaign"] },
+      { t:{en:"Find crisis verbs", de:"Finde Krisen-Verben"},
+        correct:["be in trouble","blow up","collide","explode","become desperate","evacuate"],
+        distractors:["charge","announcement"] },
+      { t:{en:"Find NYC & people words", de:"Finde New-York-Wörter"},
+        correct:["busy","cuisine","immigrant","native","origin","politics"],
+        distractors:["bravery","miracle","announcement"] }
     ],
     sb: ["emergency landing","evacuate","miracle","bravery","immigrant","cuisine","runway","takeoff","announcement","flock of birds","collide","become desperate","rescue boat","crowd-funding","campaign"]
   },
@@ -2925,18 +2910,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"work life — pay, hours & responsibilities", de:"Arbeitsleben — Gehalt, Stunden & Verantwortung"},
-        sub:{en:"Pick words about a job's conditions — what you get paid, when you work, and what you're in charge of.", de:"Wähle Wörter über die Bedingungen eines Jobs — was du verdienst, wann du arbeitest und wofür du verantwortlich bist."},
-        correct:["salary","bonus","deadline","working hours","earn","be responsible for","unemployed","career"],
-        distractors:["hobby","friendship","grandmother","recipe"] },
-      { t:{en:"interview skills & qualities", de:"Bewerbungsgespräch — Fähigkeiten & Auftreten"},
-        sub:{en:"Pick words about how to behave and come across in a job interview.", de:"Wähle Wörter darüber, wie man sich in einem Bewerbungsgespräch verhält und auftritt."},
-        correct:["confidently","enthusiastic","eye contact","memorise","skills","ambition","casual","naturally"],
-        distractors:["lazy","rude","silent","shy"] },
-      { t:{en:"fields of work", de:"Berufsfelder"},
-        sub:{en:"Pick industries where people can have a career.", de:"Wähle Branchen, in denen man eine Karriere machen kann."},
-        correct:["computing","finance","health care","sales and marketing","journalism"],
-        distractors:["sunshine","breakfast","puzzle","weekend"] }
+      { t:{en:"Find professions", de:"Finde Berufe"},
+        correct:["accountant","receptionist","mechanic","nurse","electrician","secretary","flight attendant"],
+        distractors:["salary","deadline"] },
+      { t:{en:"Find work-life words", de:"Finde Arbeitsleben-Wörter"},
+        correct:["career","salary","bonus","deadline","working hours","unemployed"],
+        distractors:["casual","memorise"] },
+      { t:{en:"Find interview words", de:"Finde Interview-Wörter"},
+        correct:["confidently","enthusiastic","eye contact","memorise","skills","ambition","(job) interview"],
+        distractors:["salary","deadline"] }
     ],
     sb: ["accountant","receptionist","electrician","flight attendant","secretary","enthusiastic","confidently","ambition","salary","deadline","(job) interview","satisfaction","unemployed","memorise","naturally"]
   },
@@ -2975,14 +2957,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"healthy diet & nutrition", de:"Gesunde Ernährung"},
-        sub:{en:"Pick words about food choices, nutrition, and eating well.", de:"Wähle Wörter über Essensauswahl, Ernährung und gesundes Essen."},
-        correct:["vegetarian","diet","health","nutrition","regularly","contain","intake","cookery"],
-        distractors:["weather","library","bicycle","fashion"] },
-      { t:{en:"eating problems & body image", de:"Essstörungen & Körperbild"},
-        sub:{en:"Pick words about disordered eating and negative feelings about one's body.", de:"Wähle Wörter über Essstörungen und negative Gefühle über den eigenen Körper."},
-        correct:["overweight","thin","eating disorder","gain","throw up","(be) ashamed"],
-        distractors:["piano","guitar","song"] }
+      { t:{en:"Find healthy-food adjectives", de:"Finde gesunde Adjektive"},
+        correct:["healthy","nutritious","tasty","fresh","filling"],
+        distractors:["artificial","fattening","harmful","revolting"] },
+      { t:{en:"Find unhealthy-food adjectives", de:"Finde ungesunde Adjektive"},
+        correct:["artificial","fattening","harmful","revolting","overweight"],
+        distractors:["nutritious","tasty","fresh"] },
+      { t:{en:"Find eating-disorder words", de:"Finde Essstörungs-Wörter"},
+        correct:["eating disorder","thin","throw up","(be) ashamed","gain"],
+        distractors:["gym","habits","feed"] }
     ],
     sb: ["artificial","nutritious","revolting","fattening","vegetarian","overweight","eating disorder","nutrition","regularly","afterwards","harmful","(be) ashamed","even though","dislike","habits"]
   },
@@ -3009,10 +2992,12 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"goals & achievement", de:"Ziele & Erfolg"},
-        sub:{en:"Pick words about reaching a goal, improving, and being inspired or supported.", de:"Wähle Wörter über das Erreichen eines Ziels, Verbesserung und Inspiration oder Unterstützung."},
-        correct:["achieve","goal","exceed","inspire","support","encouragement","learn a lesson"],
-        distractors:["fail","laziness","boredom","defeat","regret"] }
+      { t:{en:"Find achievement words", de:"Finde Erfolgs-Wörter"},
+        correct:["achieve","goal","exceed","inspire","support","encouragement"],
+        distractors:["frustrated","donate"] },
+      { t:{en:"Find feelings & connections", de:"Finde Gefühle & Verbindungen"},
+        correct:["grateful","frustrated","relate to","inspire"],
+        distractors:["income","transmit","donate"] }
     ],
     sb: ["achieve","encouragement","grateful","frustrated","community","inspire","donate","exceed","transmit","income","in particular","relate to","Small wonder","learn a lesson","range of"]
   },
@@ -3050,14 +3035,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"Aboriginal life & the outback", de:"Aboriginal-Leben & das Outback"},
-        sub:{en:"Pick words about Aboriginal Australian culture and the outback landscape.", de:"Wähle Wörter über die Kultur der Aborigines und die Outback-Landschaft."},
-        correct:["Aborigine","(the) outback","bush trail","walkabout","ancestor","heritage","survival skills","track"],
-        distractors:["skyscraper","elevator","subway","cafe"] },
-      { t:{en:"Flying Doctor medical aviation", de:"Flying Doctor — medizinischer Flugdienst"},
-        sub:{en:"Pick words about the plane, the medical help, and the long distances in the outback.", de:"Wähle Wörter über das Flugzeug, die medizinische Hilfe und die langen Strecken im Outback."},
-        correct:["aircraft","ambulance","first aid","drugs","landing","airline","distance","provide"],
-        distractors:["piano","symphony","poem","library"] }
+      { t:{en:"Find outback words", de:"Finde Outback-Wörter"},
+        correct:["Aborigine","(the) outback","bush trail","walkabout","ancestor","heritage","survival skills"],
+        distractors:["envelope","cheque"] },
+      { t:{en:"Find flying-doctor words", de:"Finde Flugarzt-Wörter"},
+        correct:["aircraft","ambulance","first aid","drugs","landing","airline"],
+        distractors:["walkabout","reed","string"] },
+      { t:{en:"Find physical-action verbs", de:"Finde Bewegungs-Verben"},
+        correct:["crawl","drag","grab","jump-start","provide"],
+        distractors:["shade","pressure","headlight"] }
     ],
     sb: ["Aborigine","walkabout","ancestor","heritage","survival skills","(the) outback","ambulance","aircraft","first aid","gorgeous","envelope","excess weight","detailed","jump-start","bush trail"]
   },
@@ -3096,18 +3082,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"the monastery & the rare book", de:"Das Kloster & das seltene Buch"},
-        sub:{en:"Pick words about monks, the library, and preserving precious old books.", de:"Wähle Wörter über Mönche, die Bibliothek und das Bewahren kostbarer alter Bücher."},
-        correct:["library","librarian","monastery","monk","precious","preserve","rare","sheet"],
-        distractors:["supermarket","gym","airport","smartphone"] },
-      { t:{en:"justice & crime", de:"Justiz & Verbrechen"},
-        sub:{en:"Pick words about criminals, judges, punishments, and illegal markets.", de:"Wähle Wörter über Verbrecher, Richter, Strafen und illegale Märkte."},
-        correct:["judge","execute","sentence to death","rob","burn to the ground","furious","auction","black market"],
-        distractors:["bakery","flower","wedding","song"] },
-      { t:{en:"addiction & bodily reactions", de:"Sucht & körperliche Reaktionen"},
-        sub:{en:"Pick words about addiction and the physical or mental reactions that come with it.", de:"Wähle Wörter über Sucht und die körperlichen oder mentalen Reaktionen, die damit einhergehen."},
-        correct:["addict","addiction","go crazy","miss out on sth","pale","confuse sb","whisper","turn up"],
-        distractors:["sunrise","meadow","playground","poem"] }
+      { t:{en:"Find book/monastery words", de:"Finde Bücher-/Kloster-Wörter"},
+        correct:["library","librarian","monastery","monk","precious","preserve","sheet"],
+        distractors:["execute","auction"] },
+      { t:{en:"Find justice words", de:"Finde Justiz-Wörter"},
+        correct:["judge","execute","sentence to death","rob","command","furious"],
+        distractors:["librarian","precious"] },
+      { t:{en:"Find addiction words", de:"Finde Sucht-Wörter"},
+        correct:["addict","addiction","go crazy","miss out on sth","pale"],
+        distractors:["sheet","whisper","kitschy"] }
     ],
     sb: ["librarian","monastery","precious","preserve","execute","sentence to death","addiction","furious","auction","black market","fascination","kitschy","whisper","confuse sb","command"]
   },
@@ -3145,18 +3128,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"gestures & body language", de:"Gesten & Körpersprache"},
-        sub:{en:"Pick words about hand signs, greetings, and body communication.", de:"Wähle Wörter über Handzeichen, Begrüßungen und Körperkommunikation."},
-        correct:["gesture","greet","index finger","nod the head","palm","thumb","victory","insult"],
-        distractors:["homework","sleep","cooking","gardening"] },
-      { t:{en:"feelings & reactions", de:"Gefühle & Reaktionen"},
-        sub:{en:"Pick words about emotional reactions and how someone responds to a situation.", de:"Wähle Wörter über emotionale Reaktionen und wie jemand auf eine Situation reagiert."},
-        correct:["embarrassed","confused","giggle","sigh","hastily","ignore","scare off","rebellious"],
-        distractors:["chair","clock","elbow","ceiling"] },
-      { t:{en:"piercings & looks", de:"Piercings & Aussehen"},
-        sub:{en:"Pick words about body piercings, style, and how someone looks.", de:"Wähle Wörter über Piercings, Stil und das Aussehen einer Person."},
-        correct:["pierced","needle","permanent","fashionable","decent-looking","goth"],
-        distractors:["cloud","rain","snow"] }
+      { t:{en:"Find wedding words", de:"Finde Hochzeits-Wörter"},
+        correct:["wedding dress","wedding suit","bride","bridegroom","bridesmaid","ceremony"],
+        distractors:["funeral","devil","goth"] },
+      { t:{en:"Find gesture/hand words", de:"Finde Gesten-Wörter"},
+        correct:["gesture","greet","index finger","thumb","palm","nod the head","victory"],
+        distractors:["sleeve","needle"] },
+      { t:{en:"Find feelings", de:"Finde Gefühle"},
+        correct:["embarrassed","confused","rebellious","giggle","sigh"],
+        distractors:["permanent","pierced","religious"] }
     ],
     sb: ["bridegroom","bridesmaid","ceremony","fashionable","rebellious","religious","embarrassed","confused","hastily","index finger","nod the head","gesture","possibility","pierced","decent-looking"]
   },
@@ -3195,18 +3175,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"Fair Trade & farming", de:"Fair Trade & Landwirtschaft"},
-        sub:{en:"Pick words about farmers, their work, and fair agreements.", de:"Wähle Wörter über Bauern, ihre Arbeit und faire Vereinbarungen."},
-        correct:["Fair Trade","farmer","make a living","pay rise","pesticide","agreement","increase","select"],
-        distractors:["orchestra","ballet","novel","poem"] },
-      { t:{en:"racism & injustice", de:"Rassismus & Ungerechtigkeit"},
-        sub:{en:"Pick words about racism, slavery, and fairness between people.", de:"Wähle Wörter über Rassismus, Sklaverei und Gerechtigkeit zwischen Menschen."},
-        correct:["racism","racist","slavery","ignorance","hurtful","painful","fairness"],
-        distractors:["cooking","gardening","sleeping","reading","dancing"] },
-      { t:{en:"strong emotions", de:"Starke Gefühle"},
-        sub:{en:"Pick words about strong feelings — anger, pride, shock, and hurt.", de:"Wähle Wörter über starke Gefühle — Wut, Stolz, Schock und Verletzung."},
-        correct:["angry","annoy","helpless","hurt","misunderstood","proud","shocked","surprised"],
-        distractors:["table","door","window","ceiling"] }
+      { t:{en:"Find Fair Trade words", de:"Finde Fairhandels-Wörter"},
+        correct:["Fair Trade","farmer","pay rise","pesticide","agreement","make a living","oil"],
+        distractors:["racism","slavery"] },
+      { t:{en:"Find racism words", de:"Finde Rassismus-Wörter"},
+        correct:["racism","racist","slavery","ignorance","fairness","hurtful"],
+        distractors:["pesticide","farmer"] },
+      { t:{en:"Find strong emotions", de:"Finde starke Gefühle"},
+        correct:["angry","helpless","misunderstood","proud","shocked","surprised"],
+        distractors:["select","claim","increase"] }
     ],
     sb: ["pesticide","slavery","ignorance","recognition","racism","racist","fairness","misunderstood","brother-in-law","son-in-law","human being","hurtful","pollution","agreement","introduction"]
   },
@@ -3245,14 +3222,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"books & reading", de:"Bücher & Lesen"},
-        sub:{en:"Pick words about books, reviews, and genres of literature.", de:"Wähle Wörter über Bücher, Rezensionen und literarische Genres."},
-        correct:["book review","blurb","historical novel","trilogy","reference","disappointment","prefer"],
-        distractors:["breakfast","bicycle","weather","sunrise","marathon"] },
-      { t:{en:"the Scottish adventure story", de:"Die schottische Abenteuergeschichte"},
-        sub:{en:"Pick words from the story about the wee Scottish millionaire and the bother he gets into.", de:"Wähle Wörter aus der Geschichte über den kleinen schottischen Millionär und den Ärger, in den er gerät."},
-        correct:["fence","millionaire","goggles","kilt","spot of bother","sort oneself out","wee","answer the door","clear up"],
-        distractors:["smartphone","laptop","airport"] }
+      { t:{en:"Find book types", de:"Finde Buch-Arten"},
+        correct:["screenplay","play","poetry","comic","novel","biography","short story","anthology"],
+        distractors:["blurb"] },
+      { t:{en:"Find book-related words", de:"Finde Buch-Wörter"},
+        correct:["book review","blurb","dictionary","historical novel","trilogy","reference"],
+        distractors:["fence","kilt","goggles"] },
+      { t:{en:"Find Scottish-adventure words", de:"Finde Schottland-Wörter"},
+        correct:["kilt","goggles","fence","wee","spot of bother","sort oneself out"],
+        distractors:["fairy","millionaire","innocent"] }
     ],
     sb: ["screenplay","anthology","biography","trilogy","historical novel","dictionary","disappointment","millionaire","innocent","reference","spot of bother","sort oneself out","answer the door","fairy","scratch"]
   },
@@ -3291,14 +3269,15 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"space exploration", de:"Weltraumforschung"},
-        sub:{en:"Pick words about astronauts, spacecraft, and missions into space.", de:"Wähle Wörter über Astronauten, Raumfahrzeuge und Weltraummissionen."},
-        correct:["asteroid","astronaut","space shuttle","spacecraft","orbit","atmosphere","crew","space travel","commander"],
-        distractors:["bicycle","harvest","museum"] },
-      { t:{en:"space views & our planet", de:"Weltraumblicke & unser Planet"},
-        sub:{en:"Pick words about what astronauts see from space and the planet below them.", de:"Wähle Wörter darüber, was Astronauten aus dem Weltraum sehen, und über den Planeten darunter."},
+      { t:{en:"Find space objects", de:"Finde Weltraum-Objekte"},
+        correct:["asteroid","astronaut","space shuttle","spacecraft","orbit","atmosphere","crew"],
+        distractors:["advert","masterpiece"] },
+      { t:{en:"Find space-view words", de:"Finde Weltraum-Blick-Wörter"},
         correct:["sunrise","sunset","gravity","surface","biosphere","uninhabitable","mankind"],
-        distractors:["basketball","orchestra"] }
+        distractors:["demand","disturb"] },
+      { t:{en:"Find feelings & reactions", de:"Finde Gefühle & Reaktionen"},
+        correct:["depressed","disgusting","tiring","disturb"],
+        distractors:["celebrate","reply","warning","masterpiece"] }
     ],
     sb: ["astronaut","asteroid","space shuttle","spacecraft","atmosphere","uninhabitable","genetic engineering","biosphere","gravity","engineering","commander","multibillion","masterpiece","commercial","disgusting"]
   },
@@ -3327,14 +3306,12 @@ const VOCAB_TASKS = {
       ]}
     ],
     wh: [
-      { t:{en:"leisure & free time", de:"Freizeit"},
-        sub:{en:"Pick words about fun, relaxation, and activities you do outside school or work.", de:"Wähle Wörter über Spaß, Erholung und Aktivitäten außerhalb von Schule oder Arbeit."},
-        correct:["scuba-diving","water-proof","chill out","leisure centre","kill time","take up","attend","highlight","tournament"],
-        distractors:["homework","exam","overtime"] },
-      { t:{en:"discipline & effort", de:"Disziplin & Einsatz"},
-        sub:{en:"Pick words about working hard, staying committed, and putting in effort.", de:"Wähle Wörter über harte Arbeit, Ausdauer und Einsatz."},
-        correct:["apply (for)","discipline","honestly","tough","catch up on","get involved with","help out"],
-        distractors:["picnic","vacation"] }
+      { t:{en:"Find leisure activities", de:"Finde Freizeit-Aktivitäten"},
+        correct:["scuba-diving","leisure centre","tournament","chill out","kill time","take up"],
+        distractors:["beggar","coal","legend"] },
+      { t:{en:"Find sport & effort words", de:"Finde Sport-Wörter"},
+        correct:["discipline","tough","honestly","apply (for)","attend","highlight"],
+        distractors:["edition","ripe","legend"] }
     ],
     sb: ["scuba-diving","tournament","discipline","leisure centre","occasionally","water-proof","autograph","catch up on","get involved with","honestly","apply (for)","legend","highlight","ripe","beggar"]
   }
@@ -3812,10 +3789,8 @@ function getDailyChallengeTypes() {
 
 function calculateSessionXP(results) {
   let xp = 0;
-  let correctCount = 0;
   for (const r of results) {
     if (r.correct) {
-      correctCount++;
       const base = (XP_TABLE[r.type] || 5) * (r.comboMult || 1);
       const factor = r.isClose ? 0.5 : 1;
       let gained = Math.max(1, Math.round(base * factor));
@@ -3823,9 +3798,6 @@ function calculateSessionXP(results) {
       xp += gained;
     }
   }
-  // No XP for sessions with zero correct answers — prevents abandoning a fresh
-  // session for a free streak bonus.
-  if (correctCount === 0) return 0;
   if (results.length >= 5 && results.every(r => r.correct && !r.isClose)) xp += 20;
   const streak = Math.min(state.studentData?.streak || 0, 7);
   xp += streak * 5;
@@ -5504,7 +5476,6 @@ function startSpeedRound() {
   // Show & start timer
   const wrap = document.getElementById('speed-timer-wrap');
   wrap.classList.add('active');
-  wrap.style.display = '';
   document.getElementById('speed-timer-text').textContent = '60';
   document.getElementById('speed-timer-bar').style.width = '100%';
   document.getElementById('skip-btn').style.display = 'none';
@@ -5525,12 +5496,9 @@ function startSpeedRound() {
 
 function resetSpeedTimer() {
   if (state.speedTimer) { clearInterval(state.speedTimer); state.speedTimer = null; }
-  const wrap = document.getElementById('speed-timer-wrap');
-  if (wrap) { wrap.classList.remove('active'); wrap.style.display = 'none'; }
-  const txt = document.getElementById('speed-timer-text');
-  if (txt) txt.classList.remove('urgent');
-  const skip = document.getElementById('skip-btn');
-  if (skip) skip.style.display = '';
+  document.getElementById('speed-timer-wrap').classList.remove('active');
+  document.getElementById('speed-timer-text').classList.remove('urgent');
+  document.getElementById('skip-btn').style.display = '';
 }
 
 function endSpeedRound() {
@@ -6303,14 +6271,18 @@ function wordHuntNextRound() {
   whState.round++;
   whState.answered = false;
   whState.picked = new Set();
-  whState.wrongCount = 0;
   const correct = [...task.correct];
   const distractors = [...(task.distractors || [])];
   shuffle(correct); shuffle(distractors);
-  const tiles = [...correct, ...distractors];
+  const maxTiles = 9;
+  let cap = Math.min(correct.length, maxTiles - Math.min(distractors.length, 2));
+  cap = Math.max(cap, 3);
+  const correctPicks = correct.slice(0, Math.min(correct.length, cap));
+  const distractorPicks = distractors.slice(0, maxTiles - correctPicks.length);
+  const tiles = [...correctPicks, ...distractorPicks];
   shuffle(tiles);
   whState.tiles = tiles;
-  whState.correctSet = new Set(correct);
+  whState.correctSet = new Set(correctPicks);
   renderWordHunt();
 }
 
@@ -6318,9 +6290,7 @@ function renderWordHunt() {
   document.getElementById('wh-round').textContent = whState.round + '/' + whState.totalRounds;
   document.getElementById('wh-score').textContent = whState.score;
   const catName = whState.target && whState.target.t ? whState.target.t.en : '';
-  document.getElementById('wh-prompt-text').innerHTML = '<span class="wh-prompt-target">' + escapeHtml(catName) + '</span>';
-  const subEl = document.getElementById('wh-prompt-sub');
-  if (subEl) subEl.textContent = (whState.target && whState.target.sub && whState.target.sub.en) ? whState.target.sub.en : '';
+  document.getElementById('wh-prompt-text').innerHTML = 'Which are <span class="wh-prompt-target">' + escapeHtml(catName) + '</span>?';
   const grid = document.getElementById('wh-grid');
   grid.innerHTML = '';
   whState.tiles.forEach(word => {
@@ -6349,13 +6319,9 @@ function wordHuntTap(el) {
     if (allFound) wordHuntFinishRound(true);
   } else {
     el.classList.add('wrong');
-    whState.wrongCount = (whState.wrongCount || 0) + 1;
     whState.score = Math.max(0, whState.score - 1);
     document.getElementById('wh-score').textContent = whState.score;
-    const fb = document.getElementById('wh-feedback');
-    fb.textContent = '❌ Not that one — keep going';
-    fb.className = 'wh-feedback show wrong';
-    document.getElementById('wh-next-btn').style.display = '';
+    wordHuntFinishRound(false);
   }
 }
 
@@ -6367,24 +6333,18 @@ function wordHuntFinishRound(perfect) {
     el.style.pointerEvents = 'none';
   });
   const fb = document.getElementById('wh-feedback');
-  const wrongs = whState.wrongCount || 0;
-  if (perfect && wrongs === 0) {
+  if (perfect) {
     fb.textContent = '🌟 Perfect! All found!';
     fb.className = 'wh-feedback show correct';
     awardVocabXP(6, 'Word Hunt');
-  } else if (perfect) {
-    fb.textContent = '✅ All found! (' + wrongs + ' wrong)';
-    fb.className = 'wh-feedback show correct';
-    awardVocabXP(3, 'Word Hunt');
   } else {
-    fb.textContent = '⏭️ Answers revealed';
+    fb.textContent = '❌ Wrong tap — moving on!';
     fb.className = 'wh-feedback show wrong';
   }
   document.getElementById('wh-next-btn').style.display = '';
 }
 
 function wordHuntNext() {
-  if (!whState.answered) { wordHuntFinishRound(false); return; }
   if (whState.round >= whState.totalRounds) { finishWordHunt(); return; }
   wordHuntNextRound();
 }
@@ -7340,25 +7300,18 @@ async function endPractice() {
 
   const list = document.getElementById('results-list');
   list.innerHTML = '';
-  if (state.results.length === 0) {
-    const empty = document.createElement('div');
-    empty.style.cssText = 'padding:18px;text-align:center;color:var(--text-secondary);font-size:0.9rem;';
-    empty.textContent = 'No words attempted in this session. Start a new practice to track your progress!';
-    list.appendChild(empty);
-  } else {
-    const sorted = [...state.results].sort((a, b) => a.correct - b.correct);
-    for (const r of sorted) {
-      const item = document.createElement('div');
-      item.className = 'result-item ' + (r.correct ? 'correct' : 'wrong');
-      const reasonTag = r.word.reason ? `<span style="font-size:0.65rem;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,0.07);color:var(--text-secondary);font-weight:500;margin-left:4px;">${escapeHtml(r.word.reason)}</span>` : '';
-      const correctAnswer = !r.correct ? ` <span style="color:#4ade80;font-weight:600;">→ ${escapeHtml(r.word.w)}</span>` : '';
-      item.innerHTML = `
-        <span class="result-icon">${r.correct ? '✓' : '✗'}</span>
-        <span class="result-word">${r.word.w}${reasonTag}</span>
-        <span class="result-answer">${r.correct ? '' : 'You: ' + escapeHtml(r.userAnswer) + correctAnswer}</span>
-      `;
-      list.appendChild(item);
-    }
+  const sorted = [...state.results].sort((a, b) => a.correct - b.correct);
+  for (const r of sorted) {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.correct ? 'correct' : 'wrong');
+    const reasonTag = r.word.reason ? `<span style="font-size:0.65rem;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,0.07);color:var(--text-secondary);font-weight:500;margin-left:4px;">${escapeHtml(r.word.reason)}</span>` : '';
+    const correctAnswer = !r.correct ? ` <span style="color:#4ade80;font-weight:600;">→ ${escapeHtml(r.word.w)}</span>` : '';
+    item.innerHTML = `
+      <span class="result-icon">${r.correct ? '✓' : '✗'}</span>
+      <span class="result-word">${r.word.w}${reasonTag}</span>
+      <span class="result-answer">${r.correct ? '' : 'You: ' + escapeHtml(r.userAnswer) + correctAnswer}</span>
+    `;
+    list.appendChild(item);
   }
 
   // Show retry-wrong section if there are wrong answers
@@ -7725,8 +7678,9 @@ function showBattleLobby(players) {
   });
   const modal = document.createElement('div');
   modal.className = 'battle-modal-bg battle-modal';
+  modal.style.cssText = 'max-height:90vh;display:flex;flex-direction:column;box-sizing:border-box;';
   var duelLabel = state.mode === 'grammar' ? '\uD83E\uDDE0 Grammar Duel' : '\uD83C\uDFC6 Word Duel';
-  modal.innerHTML = '<div style="text-align:center;margin-bottom:16px;"><div style="font-size:18px;font-weight:600;">⚔️ Choose your opponent</div><div style="font-size:13px;opacity:0.5;margin-top:4px;">' + players.length + ' classmate' + (players.length > 1 ? 's' : '') + ' online</div></div><div>' + listHtml + '</div><div style="border-top:1px solid var(--card-border,rgba(255,255,255,0.1));margin-top:12px;padding-top:12px;"><button onclick="document.getElementById(\'battle-lobby-overlay\').remove();openDuelHub();" style="width:100%;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;background:var(--accent-glow,rgba(59,130,246,0.15));border:1px solid var(--accent,#3b82f6);color:var(--accent,#3b82f6);">' + duelLabel + '</button><button onclick="document.getElementById(\'battle-lobby-overlay\').remove();showBattleHistory();" style="width:100%;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;background:var(--card);border:1px solid var(--card-border);color:var(--text);margin-top:8px;">📜 Battle History</button></div><div style="text-align:center;margin-top:12px;"><button onclick="document.getElementById(\'battle-lobby-overlay\').remove()" class="battle-modal-close">Cancel</button></div>';
+  modal.innerHTML = '<div style="text-align:center;margin-bottom:16px;flex-shrink:0;"><div style="font-size:18px;font-weight:600;">⚔️ Choose your opponent</div><div style="font-size:13px;opacity:0.5;margin-top:4px;">' + players.length + ' classmate' + (players.length > 1 ? 's' : '') + ' online</div></div><div style="overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1 1 auto;margin:0 -4px;padding:0 4px;">' + listHtml + '</div><div style="border-top:1px solid var(--card-border,rgba(255,255,255,0.1));margin-top:12px;padding-top:12px;flex-shrink:0;"><button onclick="document.getElementById(\'battle-lobby-overlay\').remove();openDuelHub();" style="width:100%;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;background:var(--accent-glow,rgba(59,130,246,0.15));border:1px solid var(--accent,#3b82f6);color:var(--accent,#3b82f6);">' + duelLabel + '</button><button onclick="document.getElementById(\'battle-lobby-overlay\').remove();showBattleHistory();" style="width:100%;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;background:var(--card);border:1px solid var(--card-border);color:var(--text);margin-top:8px;">📜 Battle History</button></div><div style="text-align:center;margin-top:12px;flex-shrink:0;"><button onclick="document.getElementById(\'battle-lobby-overlay\').remove()" class="battle-modal-close">Cancel</button></div>';
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 }
@@ -10161,7 +10115,7 @@ function launchTaskPractice(type, structureIds) {
   if (items.length === 0) { alert('No exercises available.'); return; }
   const maxItems = structureIds ? 25 : 10;
   const shuffled = items.sort(() => Math.random() - 0.5).slice(0, maxItems);
-  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: '_type_' + type, practiceType: type };
+  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: '_type_' + type, practiceType: type };
   document.body.classList.add('playing');
   renderGrammarItem();
 }
@@ -10170,7 +10124,7 @@ function startGrammarPracticeMore(type) {
   const items = grammarItems.filter(i => i.t === type);
   if (items.length === 0) return;
   const shuffled = items.sort(() => Math.random() - 0.5).slice(0, 5);
-  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: '_type_' + type, practiceType: type, bonusRound: true };
+  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: '_type_' + type, practiceType: type, bonusRound: true };
   document.body.classList.add('playing');
   renderGrammarItem();
 }
@@ -10262,7 +10216,7 @@ function startUnit1Review() {
   });
   if (reviewItems.length === 0) { alert('No review items available.'); return; }
   var shuffled = reviewItems.sort(function() { return Math.random() - 0.5; }).slice(0, 15);
-  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: '_unit1_review' };
+  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: '_unit1_review' };
   document.body.classList.add('playing');
   renderGrammarItem();
 }
@@ -10297,7 +10251,7 @@ function showGrammarTopics(unit) {
 }
 
 // --- Grammar Exercise Engine ---
-let grammarSession = { items: [], index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: null };
+let grammarSession = { items: [], index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: null };
 
 // Track where practice was launched from for back-navigation
 var grammarPracticeReturnTo = null;
@@ -10309,7 +10263,7 @@ function startGrammarExercise(structureId, filterTypes) {
   }
   if (items.length === 0) { alert('No exercises available for this topic yet.'); return; }
   const shuffled = items.sort(() => Math.random() - 0.5).slice(0, 25);
-  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: structureId };
+  grammarSession = { items: shuffled, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: structureId };
   document.body.classList.add('playing');
   renderGrammarItem();
 }
@@ -10420,7 +10374,7 @@ function startGrammarSmartReview(weakStructures) {
   });
   allItems = allItems.sort(() => Math.random() - 0.5).slice(0, 10);
   if (allItems.length === 0) { alert('No items for review.'); return; }
-  grammarSession = { items: allItems, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, answered: false, structureId: '_review' };
+  grammarSession = { items: allItems, index: 0, results: [], combo: 0, xpEarned: 0, hintUsed: false, structureId: '_review' };
   document.body.classList.add('playing');
   renderGrammarItem();
 }
@@ -10572,7 +10526,7 @@ function renderSentenceBuilding(item) {
   html += '</div>';
   html += '<div style="display:flex;gap:8px;margin-top:0.5rem;">';
   html += '<button class="grammar-hint-btn" onclick="resetSbChips()" style="flex:0 0 auto;">\u21BA Reset</button>';
-  html += '<button class="grammar-check-btn" id="sb-check-btn" style="flex:1;margin-top:0;" onclick="checkSentenceBuilding()">Check Answer</button>';
+  html += '<button class="grammar-check-btn" style="flex:1;margin-top:0;" onclick="checkSentenceBuilding()">Check Answer</button>';
   html += '</div>';
   return html;
 }
@@ -11035,20 +10989,11 @@ function resetSbChips() {
 }
 
 function checkSentenceBuilding() {
-  if (grammarSession.answered) return;
   const item = grammarSession.items[grammarSession.index];
   const answer = sbSelected.join(' ');
   // Normalize both for comparison
   const normalize = s => s.replace(/[.!?,;:]/g, '').toLowerCase().trim();
   const isCorrect = item.a.some(a => normalize(a) === normalize(answer)) || normalize(item.c) === normalize(answer);
-  document.querySelectorAll('.sb-result-chip').forEach(c => {
-    c.style.pointerEvents = 'none';
-    if (isCorrect) { c.style.background = 'rgba(34,197,94,0.15)'; c.style.borderColor = 'var(--correct,#22c55e)'; c.style.color = 'var(--correct,#22c55e)'; }
-    else { c.style.background = 'rgba(239,68,68,0.12)'; c.style.borderColor = 'var(--wrong,#ef4444)'; c.style.color = 'var(--wrong,#ef4444)'; }
-  });
-  document.querySelectorAll('.sb-chip').forEach(c => { c.style.pointerEvents = 'none'; });
-  const sbBtn = document.getElementById('sb-check-btn');
-  if (sbBtn) sbBtn.style.display = 'none';
   processGrammarAnswer(item, answer, isCorrect);
 }
 
@@ -11076,22 +11021,6 @@ function checkGrammarTyped() {
   if (!answer) return;
   input.disabled = true;
   const item = grammarSession.items[grammarSession.index];
-  const ecSelected = document.querySelector('.ec-word.ec-selected');
-  if (item.t === 'error-correction' && ecSelected) {
-    const normWord = s => s.toLowerCase().replace(/[.!?,;:'"()]/g, '');
-    const tokenize = s => s.trim().split(/\s+/).map(normWord).filter(Boolean);
-    const promptSentence = item.p.replace(/^Find and fix the mistake:\s*/i, '').trim();
-    const promptSet = new Set(tokenize(promptSentence));
-    const targetWords = new Set();
-    [item.c, ...(item.a || [])].forEach(a => {
-      tokenize(a).forEach(w => { if (!promptSet.has(w)) targetWords.add(w); });
-    });
-    if (targetWords.size > 0) {
-      const matched = targetWords.has(normWord(answer));
-      processGrammarAnswer(item, answer, matched, false);
-      return;
-    }
-  }
   const profile = item.strict ? ANSWER_PROFILES.strict : ANSWER_PROFILES.grammar;
   const grade = gradeAnswer(answer, item.c, profile, item.a || []);
   let isCorrect = grade.status === 'correct';
@@ -11123,8 +11052,6 @@ function levenshtein(a, b) {
 }
 
 function processGrammarAnswer(item, answer, isCorrect, isClose) {
-  if (grammarSession.answered) return;
-  grammarSession.answered = true;
   const feedbackArea = document.getElementById('grammar-feedback-area');
   const hintBtn = document.getElementById('grammar-hint-btn');
   if (hintBtn) hintBtn.style.display = 'none';
@@ -11230,7 +11157,6 @@ function showGrammarHint() {
 
 function nextGrammarItem() {
   grammarSession.index++;
-  grammarSession.answered = false;
   if (grammarSession.index >= grammarSession.items.length) {
     showGrammarResults();
   } else {
@@ -11457,7 +11383,7 @@ function startGrammarDailyChallenge() {
   grammarPracticeReturnTo = null;
   grammarSession = {
     items: items, index: 0, results: [], combo: 0,
-    xpEarned: 0, hintUsed: false, answered: false,
+    xpEarned: 0, hintUsed: false,
     structureId: '_daily_grammar',
     isDailyChallenge: true
   };
